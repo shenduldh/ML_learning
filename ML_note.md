@@ -1,6 +1,4 @@
-<script type="text/javascript"
-src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_CHTML"></script>
 
 # 识猫
 
@@ -34,7 +32,7 @@ skimage：将任意图片转化成能够输入模型的格式
 
 > 公式是针对某一样本的计算过程，py代码是针对所有样本的向量化计算过程。
 
-![TIM图片20180630153721](https://cdn.jsdelivr.net/gh/shenduldh/image@main/img/TIM%E5%9B%BE%E7%89%8720180630153721.png)
+<img src="https://cdn.jsdelivr.net/gh/shenduldh/image@main/img/TIM%E5%9B%BE%E7%89%8720180630153721.png" alt="TIM图片20180630153721" style="zoom:67%;" /> 
 
 ### 初始化参数
 
@@ -44,7 +42,7 @@ skimage：将任意图片转化成能够输入模型的格式
 
 1. 求预测值
 
-   公式：$z = w_{1}x_{1}+w_{2}x_{2}+...+w_{n}x_{n} + b$ 
+   公式：$$z = w_{1}x_{1}+w_{2}x_{2}+...+w_{n}x_{n} + b$$
 
    py代码：$Z = np.dot(W, X) + b$ 
 
