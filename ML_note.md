@@ -1,5 +1,3 @@
-<script src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_CHTML"></script>
-
 # 识猫
 
 ## 依赖py库
