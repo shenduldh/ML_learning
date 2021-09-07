@@ -1,0 +1,2 @@
+model_checkpoint_path: "transfer_learn"
+all_model_checkpoint_paths: "transfer_learn"
