@@ -167,7 +167,7 @@ plt.show()
 
 
 # 使用model预测实际图片
-myImage_url = 'images/test1.jpg'
+myImage_url = 'images/test.jpg'
 myImage_data = np.array(plt.imread(myImage_url))  # 3维数组(高度, 宽度, 3)
 # 用tf将图片重塑为(64, 64, 3)的3维数组，进而转化为(12288,1)列向量
 myImage = tf.resize(myImage_data, (64, 64),

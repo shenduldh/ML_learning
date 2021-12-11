@@ -64,11 +64,11 @@ print(C)
 
 假设有一张图片，图片有长、宽、高三个参数，这里的高指的是计算机用于产生颜色使用的信息，如果是黑白照片的话，高的单位就只有1；如果是彩色照片，就可能有红绿蓝三种颜色的信息，这时的高度为3。我们以彩色照片为例子，过滤器就是影像中不断移动的东西，它不断在图片上收集小批小批的像素块，收集完所有信息后输出的值，我们可以理解成是一个高度更高，长和宽更小的"图片"， 这个图片里就能包含一些边缘信息。然后以同样的步骤再进行多次卷积，将图片的长宽再压缩，高度再增加，就有了对输入图片更深的理解，将压缩、增高的信息嵌套在普通的分类神经层上，我们就能对这种图片进行分类了。
 
-<img src="readme.assets/image-20210604191812645-1623765815294.png" alt="image-20210604191812645" style="zoom: 33%;" />
+<img src="../../assets/image-20210604191812645-1623765815294.png" alt="image-20210604191812645" style="zoom: 33%;" />
 
 在每一次卷积的时候，神经层可能会无意地丢失一些信息。这时，池化就可以很好地解决这一问题，而且池化是一个筛选过滤的过程，能将 layer 中有用的信息筛选出来给下一个层分析，同时也减轻了神经网络的计算负担。也就是说在卷积的时候，我们不压缩长宽，尽量地保留更多信息，压缩的工作就交给池化了，这样的一项附加工作能够很有效的提高准确性。
 
-<img src="readme.assets/image-20210604191847793-1623765821823.png" alt="image-20210604191847793" style="zoom:33%;" />
+<img src="../../assets/image-20210604191847793-1623765821823.png" alt="image-20210604191847793" style="zoom:33%;" />
 
 ## 卷积的过程
 
@@ -76,13 +76,13 @@ print(C)
 
 卷积就是将卷积核覆盖的像素值与对应格子内的参数进行运算来得到一个新的值，这个值就可以作为描述该范围内像素值的特征。或者说，卷积将n×m个像素点的信息压缩成了一个可以囊括这些信息的点。
 
-<img src="readme.assets/image-20210605111014136-1623765826418.png" alt="image-20210605111014136" style="zoom:33%;" />
+<img src="../../assets/image-20210605111014136-1623765826418.png" alt="image-20210605111014136" style="zoom:33%;" />
 
-<img src="readme.assets/image-20210605112001994-1623765482479-1623766137548-1623766209281.png" alt="image-20210605112001994" style="zoom:50%;" />
+<img src="../../assets/image-20210605112001994-1623765482479-1623766137548-1623766209281.png" alt="image-20210605112001994" style="zoom:50%;" />
 
 卷积核通过在图像上不断移动来进行采样，然后将采样到的n×m个像素点进行卷积，如果每次移动的步长只有1，即窗口（卷积核）每次只移动一个像素点，则相当于在每一个像素点上都会进行一次采样并卷积，每个像素点都会产生一个新的特征，在一个卷积核扫描完成后，就会将所有产生的新特征进行合并作为新的图像（feature map），而且卷积后的图像的长宽不会减小，因为新产生的特征数和原图像的像素点数一样。
 
-<img src="readme.assets/image-20210605152846856-1623765835011.png" alt="image-20210605152846856" style="zoom:67%;" />
+<img src="../../assets/image-20210605152846856-1623765835011.png" alt="image-20210605152846856" style="zoom:67%;" />
 
 如果每次移动的步长为2，即窗口（卷积核）每次移动2个像素点，则相当于每2个像素点进行一次采样并卷积，每2个像素点产生一个新的特征，因此，卷积后的图像的长宽会减小一半（新产生的特征数是原图像的像素点数的一半）。
 
@@ -108,7 +108,7 @@ print(C)
 
 8. 卷积在采样时有两种padding（填充）方式。一种叫valid，它保证每次采样的块都在图片上，如果图像边缘部分的像素点不足以被采样，则它会将这部分的像素点给舍弃，因此valid填充方式可能会使得图像在卷积后的长宽减小（步长为1的情况下）；另一种叫same，它与valid不同的是，它不会将不足以采样的部分舍去，而是将其进行填充（比如用0填充），使得这部分的像素点增加到可以被刚好采样的地步，因此same填充方式会使得图像在卷积前后保持长宽不变（步长为1的情况下）。
 
-   <img src="readme.assets/image-20210604221155160-1623765837807.png" alt="image-20210604221155160" style="zoom: 33%;" />
+   <img src="../../assets/image-20210604221155160-1623765837807.png" alt="image-20210604221155160" style="zoom: 33%;" />
 
 9. 池化的作用也不是降维，而是在卷积的基础上选取更加有用的特征，从而减小数量，也就是说池化后的图像的长宽会变，但高度不变。有两种池化方法，一种是max，它将池化范围（由ksize指定）内的最大值作为这部分的特征；一种是average，它将池化范围（由ksize指定）内的平均值作为这部分的特征。同样，池化后图像长宽会减小的原因还是在于步长大于1，由此使得总的采样数小于原图像的像素点数。（或者说，池化和卷积的过程是一样的，区别就在于它们提取特征的方式）
 
@@ -120,7 +120,7 @@ print(C)
 
 13. 标准的CNN框架：
 
-    <img src="readme.assets/image-20210605223412639-1623765839805.png" alt="image-20210605223412639" style="zoom:50%;" />
+    <img src="../../assets/image-20210605223412639-1623765839805.png" alt="image-20210605223412639" style="zoom:50%;" />
 
     > ① 要生成一个pattern，不用看整张的image，你只需要看image的一小部分；
     >
@@ -140,7 +140,7 @@ print(C)
 
 5. 最后面就是两个全连接层，用于将卷积池化得到的feature map进行具体的应用。
 
-   ![image-20210604203347234](readme.assets/image-20210604203347234-1623765843253.png)
+   ![image-20210604203347234](../../assets/image-20210604203347234-1623765843253.png)
 
 ## 总结
 
@@ -155,33 +155,33 @@ print(C)
 
 ## 什么是RNN？
 
-<img src="readme.assets/chapter36-6-1623765846886.png" alt="img" style="zoom: 50%;" />
+<img src="../../assets/chapter36-6-1623765846886.png" alt="img" style="zoom: 50%;" />
 
 这种具有记忆的neural network就叫做Recurrent Neural network(RNN)。在RNN里面，每一次hidden layer产生的output都会被存到memory里去(用蓝色方块表示)。当下一次有input时，这些neuron不只是考虑$x_1,x_2$，还会考虑存到memory里的值，也就是说，对它来说除了$x_1,x_2$以外，这些存在memory里的值$a1,a2$也会影响它的output。
 
 举例说明：
 
-<img src="readme.assets/chapter36-9-1623765849502.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-9-1623765849502.png" alt="img" style="zoom:50%;" />
 
 另一个例子：这三个network都是同一个network在三个不同的时间点被使用了三次。
 
-<img src="readme.assets/chapter36-10-1623765851947.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-10-1623765851947.png" alt="img" style="zoom:50%;" />
 
 相同的输入值，由于不同的值存储在记忆中，其输出值也会不同。
 
-<img src="readme.assets/image-20210606153323771-1623765853950.png" alt="image-20210606153323771" style="zoom: 67%;" />
+<img src="../../assets/image-20210606153323771-1623765853950.png" alt="image-20210606153323771" style="zoom: 67%;" />
 
 RNN可以是deep的，比如有多个hidden layer，每次预测时都会把每个hidden layer的输出存到memory中，然后在下一次预测时，每个hidden layer都会把之前存在memory的值取出来，与输入一起运算。
 
-<img src="readme.assets/chapter36-12-1623765855934.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-12-1623765855934.png" alt="img" style="zoom:50%;" />
 
 Recurrent Neural Networ会有不同的变形：Elman network是把每个hidden layer的值存起来；Jordan network存的是整个network output的值。
 
-<img src="readme.assets/chapter36-13-1623765858101.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-13-1623765858101.png" alt="img" style="zoom:50%;" />
 
 Bidirectional neural network是一个双向的RNN：在这个network中，同时train一个正向的RNN，又可以train一个逆向的RNN，然后把这两个RNN的hidden layer拿出来，都交给一个output layer得到最后的output。这种双向的RNN在预测时可以兼顾前后的情况，比如预测某个句子中的一个单词时，可以看见该单词前面的其他词汇，也可以看见该单词后面的其他词汇，这样综合起来，就相当于先把整个句子看完了，然后在做出预测，这比单向RNN只能看到句子的一半要好得多。
 
-<img src="readme.assets/chapter36-14-1623239242293-1623765860464.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-14-1623239242293-1623765860464.png" alt="img" style="zoom:50%;" />
 
 ## LSTM
 
@@ -195,7 +195,7 @@ LSTM是对之前讲的memory（每当有一个input进来，就把它记住，�
 2. 这个memory有四个input和一个output。这四个input分别是控制三个gate的信号，用于决定这三个gate的打开和关闭，以及一个外界想要存到memory的值；这唯一的output就是输出给外界的记忆。
 3. 这三个gate的打开和关闭完全是由RNN自己学习的，由它自己决定什么时候打开它们，什么时候关闭它们。
 
-<img src="readme.assets/image-20210606163057423-1623239239074-1623765863763.png" alt="image-20210606163057423" style="zoom:50%;" />
+<img src="../../assets/image-20210606163057423-1623239239074-1623765863763.png" alt="image-20210606163057423" style="zoom:50%;" />
 
 进一步讲解LSTM：
 
@@ -205,7 +205,7 @@ LSTM是对之前讲的memory（每当有一个input进来，就把它记住，�
 
 （NOTE：空心圆代表activation function）
 
-<img src="readme.assets/image-20210606171035251-1623239232633-1623765866125.png" alt="image-20210606171035251" style="zoom:50%;" />
+<img src="../../assets/image-20210606171035251-1623239232633-1623765866125.png" alt="image-20210606171035251" style="zoom:50%;" />
 
 举个例子：
 
@@ -215,7 +215,7 @@ LSTM是对之前讲的memory（每当有一个input进来，就把它记住，�
 4. 第二个输入是(3,1,0)，由于x2=1，所以外界的输入被存入，且原有的memory也不会被遗忘，因此memory cell的值变为0+3=3，同时x3=0，所以也不会输出任何值到外界；
 5. 其他输入依次类推。
 
-<img src="readme.assets/chapter36-17-1623239229396-1623765868431.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-17-1623239229396-1623765868431.png" alt="img" style="zoom:50%;" />
 
 具体的运算过程（接上例）：
 
@@ -223,35 +223,35 @@ LSTM是对之前讲的memory（每当有一个input进来，就把它记住，�
 2. 通过上述计算，就可以得到memory cell的四个input，由此就可以更新memory cell中的记忆，以及决定是否将memory输出到外界。
 3. NOTE：上面说了LSTM可以通过学习来知道何时需要打开或关闭gate，这里学习的东西其实就是此处linear transform的权重和bias。
 
-<img src="readme.assets/chapter36-18-1623239226066-1623765870493.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter36-18-1623239226066-1623765870493.png" alt="img" style="zoom:50%;" />
 
 ### LSTM如何在network中工作？
 
 1. 对于一个原始的神经网络，它的样子就是如下图所示，将input输入，经过神经元简单的linear transform计算并加上activation function，就可以得到output；
 
-   <img src="readme.assets/chapter36-24-1623239222827-1623765872602.png" alt="img" style="zoom: 50%;" />
+   <img src="../../assets/chapter36-24-1623239222827-1623765872602.png" alt="img" style="zoom: 50%;" />
 
 2. 如果要使用LSTM，就只需要简单地将原始神经网络中的神经元替换为LSTM即可。如下图所示，将原来的两个神经元替换成两个LSTM，由于input还是只有一个，但一个LSTM需要四个input，因此就通过四个不同的linear transform（每个linear transform都有不同的weights和bias），将唯一的input分成四个不同的input，然后输入到LSTM中。也就是说，原始神经元只有一个input和一个output，LSTM就有四个input（由原始神经元的一个input分解为四个）和一个output，即用LSTM替换原始神经元后，其参数量会变成原来的四倍。
 
-   <img src="readme.assets/chapter36-25-1623239219125-1623765874160.png" alt="img" style="zoom: 50%;" />
+   <img src="../../assets/chapter36-25-1623239219125-1623765874160.png" alt="img" style="zoom: 50%;" />
 
 ### LSTM在实际中如何运作？（如何向量化）
 
 1. 假设某一层有一排的LSTM，所有LSTM的四个input可以分别组成四个向量（$Z^f$、$Z^i$、$Z$、$Z^o$），每个向量的每一维就代表了一个LSTM的其中一个input，比如向量$Z^f$的每一维就是每个LSTM用于控制forget gate的input，这四个输入向量分别由四个权重矩阵和实际输入向量$X^t$相乘得到（四个权重矩阵的每一维就是每个LSTM中将实际input通过linear transform分别转化为四个input的权重参数）。其中，所有LSTM的memory cell中保存的记忆值可以组成向量$C^{t-1}$，该向量的每一维就是一个LSTM的记忆值。（t-1表示在时刻t-1）
 
-   <img src="readme.assets/chapter36-26-1623239215968-1623765875758.png" alt="img" style="zoom:50%;" />
+   <img src="../../assets/chapter36-26-1623239215968-1623765875758.png" alt="img" style="zoom:50%;" />
 
 2. 所有LSTM的在时刻t的output可以组成向量$y^{t}$，该向量的每一维就代表一个LSTM的ouput。该向量可以通过上面得到的四个向量（$Z^f$、$Z^i$、$Z$、$Z^o$），直接通过运算得到，运算过程如下图所示（蓝色圆圈表示的相乘是指element-wise，即按元素相乘）。此外，图中相加的结果就是此刻t要存放在memory中的值。
 
-   <img src="readme.assets/image-20210606192055649-1623239192951-1623765877437.png" alt="image-20210606192055649" style="zoom:50%;" />
+   <img src="../../assets/image-20210606192055649-1623239192951-1623765877437.png" alt="image-20210606192055649" style="zoom:50%;" />
 
 3. 将这个process进行下去，下一个时间点 t+1 的运算就如下图所示。此外，LSTM的input其实不仅仅考虑当前时间点 t+1 的实际输入$X^{t+1}$，它还要考虑前一个时间点t的记忆向量$C^{t}$和输出$h^{t}$（peephole）。所以总的过程就是，将$C^{t}$、$h^{t}$和$X^{t+1}$这三个向量并在一起，然后通过四个transform矩阵得到四个操纵gate的向量，这四个向量经过运算得到输出$y^{t+1}$和当前memory cell要存储的记忆向量$C^{t+1}$。
 
-   <img src="readme.assets/image-20210606191953579-1623765878851.png" alt="image-20210606191953579" style="zoom:50%;" />
+   <img src="../../assets/image-20210606191953579-1623765878851.png" alt="image-20210606191953579" style="zoom:50%;" />
 
 4. 实际上LSTM可以不只有一层，将上一层的输入接入下一层，就可以组成多层的LSTM，如下图所示：
 
-   <img src="readme.assets/image-20210606193537962-1623765880153.png" alt="image-20210606193537962" style="zoom:50%;" />
+   <img src="../../assets/image-20210606193537962-1623765880153.png" alt="image-20210606193537962" style="zoom:50%;" />
 
 > LSTM的简化版本就是GRU（只有两个gate，性能与LSTM差不多，参数少了三分之一），最简单的版本就是SimpleRNN，也就是没有gate的版本。
 
@@ -261,19 +261,19 @@ RNN的cost function就是所有时间点的output和reference vector（label）�
 
 1. 如果将RNN网络按照每一个时间点的顺序进行unfold，比如序列长度为100，则可以unfold成100层的神经网络，则在反向传播时，我们就需要分别利用梯度下降的方法去更新每一层神经网络的参数，只不过这100层的神经网络的参数都是一样的。也就是说，对于每一个时间点对应的神经网络，我们都需要去更新它的参数，但因为每个时间点对应的神经网络的参数都一样，所以就相当于在不同时间点对同一组参数进行反复更新。那么如何求某个时间点t所对应的参数梯度呢？由于时刻t的状态不仅对当前时刻的损失有贡献，它还对它之后每一个时间点的损失都有贡献，因此时刻t对应的参数梯度就应该是当前时刻的损失和后续所有时刻的损失对该参数的偏导之和。这就是BPTT的整个过程，总结起来就是一个时间点更新一次，每次更新的梯度由当前及后续所有时刻的损失决定。
 
-   <img src="readme.assets/719020-20160927232135125-1438774048-1623765882349.png" alt="img" style="zoom: 50%;" />
+   <img src="../../assets/719020-20160927232135125-1438774048-1623765882349.png" alt="img" style="zoom: 50%;" />
 
 2. 对于BPTT，如果序列长度为1000，则相当于对1000层的网络进行反向传播，即一次反向传播就需要对参数进行1000次的更新，因此计算量贼大。对BPTT的一个改进就是TBPTT，TBPTT的做法就是每前向传播k1个时间点，就反向传播k2个时间点。也就是说，TBPTT不会像BPTT那样，前向传播到最后一个时间点后再进行反向传播，而是每前向传播k1个时间点就进行一次反向传播，而且在每次反向传播时，不会从当前时间点一直传播到第一个时间点，而是仅仅传播k2个时间点就结束了（也就是不会对从第一个时间点到当前时间点的参数都更新一次，而是仅更新当前时间点和前k2-1个时间点的参数），即每次反向传播只会更新k2个时间点的参数（NOTE：每个时间点的参数都是一样的）。
 
    > 参考论文：[An Efficient Gradient Based Algorithm for On-Line Training of Recurrent Network Trajectories](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.56.7941&rep=rep1&type=pdf)
    
-   ![Diagram of True Truncated Backpropagation](readme.assets/RNN_true_truncated_backprop-1623765884637.png)
+   ![Diagram of True Truncated Backpropagation](../../assets/RNN_true_truncated_backprop-1623765884637.png)
 
 ## RNN存在的问题
 
 RNN的问题：RNN的error surface的变化是非常陡峭的，有一些地方非常的平坦，一些地方非常的陡峭，就像是悬崖峭壁一样。
 
-<img src="readme.assets/chapter37-33-1623765886391.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter37-33-1623765886391.png" alt="img" style="zoom:50%;" />
 
 出现这个问题的原因（用例子讲）：
 
@@ -283,7 +283,7 @@ RNN的问题：RNN的error surface的变化是非常陡峭的，有一些地方�
 4. 现在假设w是我们要learn的参数，我们想要知道它的gradient，即当我们改变w的值时候，对neural的output有多大的影响。现在假设w=1，则$y^{1000}$=1，假设w=1.01，则$y^{1000}\approx 20000$，可以看见w有一点小小的变化，会对它的output影响非常大，即w有很大的gradient。有很大的gradient，我们就把learning rate设小一点就好了。但我们把w设为0.99，则$y^{1000}\approx0$，那如果再把w设为0.01，那$y^{1000}\approx0$，也就是说在1的这个地方有很大的gradient，但是在0.99这个地方就突然变得非常非常的小，这个时候你就需要一个很大的learning rate。
 5. 结果就是，设置learning rate很麻烦，你的error surface很崎岖，你的gardient是时大时小的，在非常小的区域内，gradient有很多的变化。从这个例子你可以看出来RNN出现问题的原因，RNN training的问题其实来自它把同样的东西在transition的时候反复使用，所以这个w只要一有变化，它可能完全没有造成任何影响，但一旦造成影响，影响都是天崩地裂的，即gradient大的时候非常大，小的时候几乎没有。所以，RNN不好训练的原因不是来自activation function，而是来自于它有time sequence，同样的weight在不同的时间点被反复的使用。
 
-<img src="readme.assets/chapter37-34-1623765889156.png" alt="img" style="zoom:50%;" />
+<img src="../../assets/chapter37-34-1623765889156.png" alt="img" style="zoom:50%;" />
 
 解决方法：
 
@@ -291,7 +291,7 @@ RNN的问题：RNN的error surface的变化是非常陡峭的，有一些地方�
 
 2. LSTM：LSTM可以把那些平坦的地方拿掉，从而解决gradient vanish的问题，但不会解决gradient explode的问题，即有些地方还是非常的崎岖，也就是说，LSTM的做法使得有些地方仍然是变化非常剧烈的，但是不会有特别平坦的地方。因此，在做LSTM时，可以放心地把learning rate设置的小一点，保证在learning rate很小的情况下进行训练。
 
-   <img src="readme.assets/chapter37-35-1623765893280.png" alt="img" style="zoom:50%;" />
+   <img src="../../assets/chapter37-35-1623765893280.png" alt="img" style="zoom:50%;" />
 
    那为什么LSTM可以解决梯度消失的问题呢，为什么可以避免gradient特别小呢？
 
@@ -309,15 +309,15 @@ RNN的问题：RNN的error surface的变化是非常陡峭的，有一些地方�
 
 ## 什么是自编码？
 
-<img src="readme.assets/auto2-1623765895380.png" alt="auto2.png" style="zoom:67%;" />
+<img src="../../assets/auto2-1623765895380.png" alt="auto2.png" style="zoom:67%;" />
 
 AutoEncoder可以看成是将图片进行压缩再解压的一个神经网络（将有很多feature的数据进行压缩，之后再进行解压的过程）。当压缩的时候，原有的图片质量被缩减，解压时用信息量小却包含了所有关键信息的文件恢复出原本的图片。
 
-<img src="readme.assets/auto3-1623516808697-1623765896783.png" alt="auto3.png" style="zoom:67%;" />
+<img src="../../assets/auto3-1623516808697-1623765896783.png" alt="auto3.png" style="zoom:67%;" />
 
 有时神经网络要接受大量的输入信息，比如输入信息是高清图片时，输入信息量可能达到上千万，让神经网络直接从上千万个信息源中学习是一件很吃力的工作。所以，何不压缩一下，提取出原图片中的最具代表性的信息，缩减输入信息量，再把缩减过后的信息放进神经网络学习，这样学习起来就简单轻松了。所以，自编码就能在这时发挥作用，通过将原数据（白色的X）压缩，解压成黑色的X，然后通过对比黑白X，求出预测误差并进行反向传递，逐步提升自编码的准确性。训练好的自编码中间这一部分就是能总结原数据的精髓。可以看出，从头到尾,只用到了输入数据X，并没有用到X对应的数据标签，所以可以说自编码是一种非监督学习。
 
-<img src="readme.assets/auto4-1623516803126-1623765898369.png" alt="auto4.png" style="zoom:67%;" />
+<img src="../../assets/auto4-1623516803126-1623765898369.png" alt="auto4.png" style="zoom:67%;" />
 
 到了真正使用自编码的时候，通常只会用到自编码前半部分，这部分也叫作Encoder编码器。编码器能得到原数据的精髓，然后我们只需要再创建一个小的神经网络学习这个精髓的数据，不仅减少了神经网络的负担，而且同样能达到很好的效果。自编码和PCA主成分分析在提取主要特征时发挥类似的作用，甚至超越了 PCA。换句话说，自编码可以像PCA一样给特征属性降维。
 
@@ -329,27 +329,27 @@ AutoEncoder可以看成是将图片进行压缩再解压的一个神经网络（
 
 批处理化也可以看成神经网络的一层，通常放置在全连接层和激励函数之间，对全连接层的输出进行规范化。
 
-<img src="readme.assets/NB4-1623765900009.png" alt="NB4.png" style="zoom:67%;" />
+<img src="../../assets/NB4-1623765900009.png" alt="NB4.png" style="zoom:67%;" />
 
 假设全连接层的输出如下图的下方所示，可以看出，采用无批标准化的输出分布会非常宽泛，而使用批标准化的输出分布会集中在激活函数的输入敏感区间。
 
-<img src="readme.assets/NB5-1623765902035.png" alt="NB5.png" style="zoom:67%;" />
+<img src="../../assets/NB5-1623765902035.png" alt="NB5.png" style="zoom:67%;" />
 
 这两种输出分布经过激活函数所形成的输出分布如下所示，无批标准化的输出分布大部分都到了饱和阶段，也就是激活值不是-1，就是1，而经过批标准化后，大部分激活值在每个分布区间都还是存在的，将这个激活后的分布传递到下一层神经网络进行后续计算，可以发现每个区间都有分布的这一种对于神经网络就会更加有价值。
 
-<img src="readme.assets/NB6-1623765903484.png" alt="NB6.png" style="zoom:67%;" />
+<img src="../../assets/NB6-1623765903484.png" alt="NB6.png" style="zoom:67%;" />
 
 批标准化不仅仅是标准化了一下数据，它还在最后进行了反标准化的步骤（如下算法所示）。为什么要这样呢？这是为了让神经网络自己去学着使用和修改扩展参数$\gamma$和平移参数β，这样神经网络就能自己慢慢琢磨出前面的标准化操作到底有没有起到优化的作用，如果没有起到作用，那么就使用$\gamma$和β来抵消一些标准化的操作。
 
-<img src="readme.assets/NB7-1623765904818.png" alt="NB7.png" style="zoom: 80%;" />
+<img src="../../assets/NB7-1623765904818.png" alt="NB7.png" style="zoom: 80%;" />
 
 最后我们来看看一张神经网络训练到最后，代表了每层输出分布的图，这样我们就能一眼看出批标准化的功效了。批标准化的目标就是让每一层输出值在有效的范围内传递下去，也可以说，批标准化就是用来解决深度神经网络层数太多，而没办法有效前向传递的问题的一种有效方法。
 
-<img src="readme.assets/NB8-1623765906172.png" alt="NB8.png" style="zoom:67%;" />
+<img src="../../assets/NB8-1623765906172.png" alt="NB8.png" style="zoom:67%;" />
 
 下图是8层神经网络的每层输入分布（采用relu激活函数），可以看出，上排由于没有使用批标准化，所以每层的输入很快变成零0，也可以说所有的神经元都已经死了（没有效果了），而下排使用批标准化过后，每层的值都能有一个比较好的分布效果，大部分神经元都还活着。
 
-<img src="readme.assets/5_13_03-1623765907622.gif" alt="5_13_03.gif" style="zoom:67%;" />
+<img src="../../assets/5_13_03-1623765907622.gif" alt="5_13_03.gif" style="zoom:67%;" />
 
 # 迁移学习
 
@@ -362,4 +362,3 @@ AutoEncoder可以看成是将图片进行压缩再解压的一个神经网络（
 总结起来，迁移学习就是在训练好了的模型上接着训练其他内容，充分使用原模型的理解力。但如果对于一个模型，迁移前的数据和迁移后的数据差距很大，那么这个迁移来的模型并不会起多大作用，还可能干扰我后续的决策，因此我们就没有必要去迁移该模型。
 
 拿CNN来举个例子，假如我训练好了一个区分男人和女人的CNN，接着来了个任务，说我下个任务是区分照片中人的年龄。这看似完全不相干的两个模型，但是我们却可以运用到迁移学习，让之前那个CNN当我们的初始模型，因为区分男女的CNN已经对人类有了理解，基于这个理解开始训练总比完全重新开始训练强。但是如果你下一个任务是区分飞机和大象，那么这个CNN可能就没那么有用了，因为这个CNN可能并没有对飞机和大象有任何的理解。
-

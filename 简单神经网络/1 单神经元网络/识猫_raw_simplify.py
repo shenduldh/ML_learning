@@ -259,7 +259,7 @@ frame = legend.get_frame()
 frame.set_facecolor('0.90')
 plt.show()
 
-my_image = "test1.jpg"
+my_image = "test.jpg"
 fname = "images/" + my_image
 
 image = np.array(plt.imread(fname))

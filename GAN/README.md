@@ -40,7 +40,7 @@ AutoEncoder 本质上就是一种储存已知图片的网络，我们无法从�
 
 为了优化 KL 散度，VAE 应用了重新参数化的技巧：不像标准自编码器那样产生仅产生一个实数值向量，VAE 的编码器会产生两个向量，分别为均值向量和标准差向量。
 
-<img src="./生成对抗网络.assets/VAE.png" style="zoom: 67%;" />
+<img src="./../assets/VAE.png" style="zoom: 67%;" />
 
 此时，解码器所需要的潜在变量就可以从标准差向量中采样并加上均值向量来得到。
 
@@ -140,27 +140,27 @@ GAN 包含两部分：Generator 和 Discriminator。
 
 - Generator：输入低维向量，生成图片（高维向量）
 
-  <img src="生成对抗网络.assets/image-20210805164328483.png" alt="image-20210805164328483" style="zoom: 50%;" />
+  <img src="../assets/image-20210805164328483.png" alt="image-20210805164328483" style="zoom: 50%;" />
 
 - Discriminator：输入图片，判断图片是否真实（即判断是否为 Generator 产生的）
 
-  <img src="生成对抗网络.assets/image-20210805164545611.png" alt="image-20210805164545611" style="zoom: 50%;" />
+  <img src="../assets/image-20210805164545611.png" alt="image-20210805164545611" style="zoom: 50%;" />
 
 Generator 和 Discriminator 在对抗中相互成长：Generator 的目的是通过不断地优化，使得自身产生的图片可以让 Discriminator 分辨不出真假；Discriminator 的目的是通过不断地优化，使得自身可以分辨出输入的图片是否为 Generator 产生的。（也可以将它们比喻为师生关系）
 
-<img src="生成对抗网络.assets/image-20210805164713637.png" alt="image-20210805164713637" style="zoom:50%;" />
+<img src="../assets/image-20210805164713637.png" alt="image-20210805164713637" style="zoom:50%;" />
 
 **GAN 训练的步骤**
 
-<img src="生成对抗网络.assets/image-20210805191750289.png" alt="image-20210805191750289" style="zoom: 50%;" />
+<img src="../assets/image-20210805191750289.png" alt="image-20210805191750289" style="zoom: 50%;" />
 
 **GAN 训练的算法流程**
 
-<img src="生成对抗网络.assets/image-20210805192224421.png" alt="image-20210805192224421" style="zoom:50%;" />
+<img src="../assets/image-20210805192224421.png" alt="image-20210805192224421" style="zoom:50%;" />
 
 ## 什么是结构化学习？
 
-<img src="生成对抗网络.assets/image-20210805195243225.png" alt="image-20210805195243225" style="zoom: 50%;" /> 
+<img src="../assets/image-20210805195243225.png" alt="image-20210805195243225" style="zoom: 50%;" /> 
 
 GAN 就是结构化学习的一种实现方法。
 
@@ -171,11 +171,11 @@ Generator 和 Discriminator 分别单独训练的情况：
 - VAE 是 Generator 的一种实现自我训练（即不需要 Discriminator）的方法。但采用 Generator 自训练的方式来产生图片会有一个缺陷：如果 Generator 生成的是图片，那么图片的每个像素点之间必定有着重要的关联，但 Generator 无法很好地捕捉到这种关联性，除非增加网络的深度（Generator 最后一层 layer 的神经元数目等于生成图片的像素数目，这些神经元各自产生对应的像素值，相互间并不会产生联系，因此为了让这些神经元之间能够交流，就只能多增加几层 layer）。而 Generator 的优势就是很容易产生图片。
 - Discriminator 也可以用来生成图片：穷举所有的图片让 Discriminator 进行判断，然后将那些 Discriminator 认为好的图片作为生成的结果进行输出。此时训练 Discriminator 的方法就是：① 首先采样固定的正样本，以及随机产生一些负样本，用这两种样本对 Discriminator 进行训练；② 使用训练后的 Discriminator 生成新的负样本，与之前的正样本一起对 Discriminator 继续进行训练；③ 重复步骤 2 直到生成的负样本和正样本的分布一样。因此，采用 Discriminator 自训练的方式来产生图片的缺陷就是难以生成图片，因为实现 "穷举" 这个过程几乎不可完成。而 Discriminator 的优势就是可以很好地考虑像素点之间的关联，因为它每次接收的是完整的一张图片，可以直接从整体上观察每一个像素点。
 
-<img src="生成对抗网络.assets/image-20210805234548599.png" alt="image-20210805234548599" style="zoom:50%;" />
+<img src="../assets/image-20210805234548599.png" alt="image-20210805234548599" style="zoom:50%;" />
 
 下面就是 Discriminator 自训练这种方式在每次训练后得到的分值分布示例图：红线表示分值分布，蓝色表示负样本分布，绿线表示正样本分布。Discriminator 的目的就是让分值分布中处于负样本的地方分值低，处于正样本的地方的分值高。随着每次从训练后的 Discriminator 中采样负样本，Discriminator 就会不断把非正样本的地方的分值给拉低，直到采样的负样本和正样本的分布一致。这就说明了为什么 Discriminator  可以很好地表示真实图片的分布，同时还说明了 Discriminator 随着训练时间越长效果越显著的原因。
 
-<img src="生成对抗网络.assets/image-20210805235116263.png" alt="image-20210805235116263" style="zoom:40%;" />
+<img src="../assets/image-20210805235116263.png" alt="image-20210805235116263" style="zoom:40%;" />
 
 将 Generator（易生成图片，但无大局观） 和 Discriminator（有大局观，但难以生成图片） 放在一起训练，就可以很好地相互利用彼此的优势，并消除对方的缺陷。这也就是 GAN 相比于 VAE 生成的图片要更清晰的原因。
 
@@ -187,49 +187,49 @@ Generator 和 Discriminator 分别单独训练的情况：
 
 现在我们有一个概率分布 $P_{G}(x,θ)$​，这个概率分布由参数 $θ$​ 操控（比如高斯混合分布，我们可以用均值和方差这两种参数来调整分布），我们要做的就是通过调整参数，使得这个概率分布逼近数据集的分布。具体的做法就是从数据集中采样一些数据 $x$​ 出来，然后用 $P_{G}(x,θ)$​ 来计算若采用 $P_{G}(x,θ)$​ 来产生这些数据的概率 L（即似然值），接着通过调整参数 $θ$​，让这个概率 L 最大化（这个最大化的过程就是极大似然，也就是 $P_{G}(x,θ)$​ 逼近 $P_{data}(x)$​ 的过程）。
 
-<img src="生成对抗网络.assets/image-20210817172654165.png" alt="image-20210817172654165" style="zoom:50%;" />
+<img src="../assets/image-20210817172654165.png" alt="image-20210817172654165" style="zoom:50%;" />
 
 > 为什么最大化似然值 L 就是在逼近 $P_{data}(x)$​？
 >
-> <img src="生成对抗网络.assets/image-20210817174826912.png" alt="image-20210817174826912" style="zoom: 50%;" />
+> <img src="../assets/image-20210817174826912.png" alt="image-20210817174826912" style="zoom: 50%;" />
 
 如果我们假定 $P_{G}(x,θ)$ 是高斯混合模型（VAE 就是这种做法），那么我们就可以很好地计算出采样数据的似然值。但实际情况是，我们希望 $P_{G}(x,θ)$ 是比高斯混合模型更复杂的模型（比如神经网络），这样逼近出来的分布才会更接近数据集的分布，但更复杂的模型的缺陷就是无法计算出采样数据的似然值。
 
 GAN 的做法是通过一个神经网络（即 Generator）将一个简单的分布转换成极为复杂的分布 $P_G$，然后用这个极为复杂的分布去逼近数据集的分布 $P_{data}$，即最小化 $P_G$ 和 $P_{data}$ 之间的散度 $Div$。此时存在一个问题：我们并不知道 $P_G$​ 长什么样子，因此也就无法直接使用极大似然（或最小化 KL 散度）的方法求解，而且即使知道它的样子，我们也很难求出似然值。​
 
-<img src="生成对抗网络.assets/image-20210817185311732.png" alt="image-20210817185311732" style="zoom:45%;" />
+<img src="../assets/image-20210817185311732.png" alt="image-20210817185311732" style="zoom:45%;" />
 
 为了解决这个问题，GAN 的做法就是训练另一个神经网络（即 Discriminator），而这个网络训练的结果就是 $P_G$​ 和 $P_{data}$​ 之间的散度 $Div$​。具体的方法就是分别从 $P_G$​ 和 $P_{data}$​ 中采样数据，然后通过训练让 Discriminator 可以最好地分辨出采样数据是来自于 $P_G$​ 还是 $P_{data}$​，它的 loss 就可以定义为下图中的 V(G,D)，而训练得到的最大 loss  （梯度上升）实际上就是 $P_G$​ 和 $P_{data}$​​ 之间的 JS 散度。
 
-<img src="生成对抗网络.assets/image-20210817212015327.png" alt="image-20210817212015327" style="zoom:45%;" />
+<img src="../assets/image-20210817212015327.png" alt="image-20210817212015327" style="zoom:45%;" />
 
 > 为什么 Discriminator 的最大 loss 就是 $P_G$​ 和 $P_{data}$​ 之间的 JS 散度？
 >
 > ① 直观理解：$P_G$ 和 $P_{data}$ 之间的差距越小，即分布越相近，则它们各自采样的数据对于 Discriminator 来说就越难分辨。
 >
-> <img src="生成对抗网络.assets/image-20210817213841549.png" alt="image-20210817213841549" style="zoom:33%;" />
+> <img src="../assets/image-20210817213841549.png" alt="image-20210817213841549" style="zoom:33%;" />
 >
 > ② 公式推导：
 >
 > 1. 固定住G，通过调整 D 的参数最大化 V(G,D)：
 >
->    <img src="生成对抗网络.assets/image-20210817215700914.png" alt="image-20210817215700914" style="zoom:50%;" /> 
+>    <img src="../assets/image-20210817215700914.png" alt="image-20210817215700914" style="zoom:50%;" /> 
 >
 > 2. 由于 D(x) 可以是任意的函式，因此我们可以假定 D(x) 是一个分段函式，在该分段函式中，每一个 x 都单独对应一个函式 D(x)。那么我们可以针对每一个给定的 x，去求该 x 对应的最优 D*：
 >
->    <img src="生成对抗网络.assets/image-20210817221201963.png" alt="image-20210817221201963" style="zoom:50%;" /> 
+>    <img src="../assets/image-20210817221201963.png" alt="image-20210817221201963" style="zoom:50%;" /> 
 >
 > 3. 将最优的 D* 代回 V(G,V)：
 >
->    <img src="生成对抗网络.assets/image-2021081755555555.png" alt="image-2021081755555555" style="zoom:50%;" /> 
+>    <img src="../assets/image-2021081755555555.png" alt="image-2021081755555555" style="zoom:50%;" /> 
 >
 > 4. 由上式可知，最优 D* 对应的 loss（V(G,D*)）就是 $P_G$​ 和 $P_{data}$​ 之间的 JS 散度。
 
 到此，我们可以知道两个事实：① 用 Generator 来产生复杂的分布去逼近真实分布；② 用 Discriminator 的最优 loss 来衡量两个分布间的差距。那么我们现在要做的事情就是通过调整 Generator 让 Discriminator 的最优 loss 接近最小，即 $G^*=\arg \min_G \max_D V(G,V)$。具体的做法就是 ① 固定住 Generator，训练 Discriminator 来得到两个分布间的 JS 散度；② 固定住 Discriminator，训练 Generator 来缩小由步骤 1 得到的 JS 散度；③ 不断交替执行步骤 1 和 2。
 
-<img src="生成对抗网络.assets/image-20210817223736787.png" alt="image-20210817223736787" style="zoom:50%;" />
+<img src="../assets/image-20210817223736787.png" alt="image-20210817223736787" style="zoom:50%;" />
 
-<img src="生成对抗网络.assets/image-20210818151003058.png" alt="image-20210818151003058" style="zoom: 45%;" />
+<img src="../assets/image-20210818151003058.png" alt="image-20210818151003058" style="zoom: 45%;" />
 
 重新理解 GAN 的算法流程：
 
@@ -237,11 +237,11 @@ GAN 的做法是通过一个神经网络（即 Generator）将一个简单的分
 2.  一次迭代中，应训练多次 D，而仅训练一次 G；
 3. 训练 D 时，损失函式仅保留后项（因为前项与 G 无关，也因此仅须从 G 采样数据来进行训练）。
 
-<img src="生成对抗网络.assets/image-20210818153756719.png" alt="image-20210818153756719" style="zoom:50%;" />
+<img src="../assets/image-20210818153756719.png" alt="image-20210818153756719" style="zoom:50%;" />
 
 实际训练 G 时的 loss function：
 
-<img src="生成对抗网络.assets/image-20210818161635095.png" alt="image-20210818161635095" style="zoom:50%;" />
+<img src="../assets/image-20210818161635095.png" alt="image-20210818161635095" style="zoom:50%;" />
 
 > 1. 为什么要轮流交替，不能一次到位吗？
 >
@@ -253,13 +253,13 @@ GAN 的做法是通过一个神经网络（即 Generator）将一个简单的分
 >
 >    分段微分：当 x 的取值在第一条黑色虚线左边的区域内，则微分的对象就是 $f_1(x)$；进行一次梯度下降后，x 的取值变成了在第一条黑色虚线右边的区域内，则微分的对象就是 $f_2(x)$。也就是说，想要计算含有 max 的函式的微分，就得先根据 x 的取值范围弄清楚微分的对象是什么，然后直接对该对象进行微分即可，并且当 x 的取值范围改变后，就需要重新确定微分的对象，然后再重新计算微分。
 >
->    <img src="生成对抗网络.assets/image-20210818145909511.png" alt="image-20210818145909511" style="zoom:50%;" />
+>    <img src="../assets/image-20210818145909511.png" alt="image-20210818145909511" style="zoom:50%;" />
 >
 > 3. 如何理解数据分布？
 >
 >    数据可以理解为空间上的点，因此数据的分布可以用空间上点的位置（空间分布）来描述，但也可以用概率分布来描述。用概率分布来描述就是指数据处于空间上每个点的位置的概率，一般来说，概率不是零的点就是数据实际分布的位置。从分布中采样数据，一方面可以理解为在数据的空间分布上随机均匀地选取一个点作为数据，另一方面可以理解为在数据的概率分布上按照每个点的概率来选取一个点来作为数据。比如关于动漫人物头像图片的概率分布：
 >
->    <img src="生成对抗网络.assets/image-20210817171034395.png" alt="image-20210817171034395" style="zoom:33%;" />
+>    <img src="../assets/image-20210817171034395.png" alt="image-20210817171034395" style="zoom:33%;" />
 
 ## 损失函数的理解
 
@@ -269,7 +269,7 @@ $p_t(x)$​：采样数据来自于真实分布的概率。
 
 $p_g(x)$：采样数据来自于生成分布的概率。
 
-<img src="生成对抗网络.assets/image-20210806162650559.png" alt="image-20210806162650559" style="zoom: 67%;" />
+<img src="../assets/image-20210806162650559.png" alt="image-20210806162650559" style="zoom: 67%;" />
 
 # CGAN
 
@@ -283,25 +283,25 @@ text2image 是用文本操控所生成图片样式的 CGAN 模型。
 
 输入文本，生成相应的图片，且要求该图片与文本对应的真实图片尽量接近。缺陷：相同的文本可能对应多种类型的图片（例如 "火车" 这个文本对应有正面、侧面、颜色不同的火车），这样生成的图片就是这些图片的平均，从而让生成的图片模糊不清。
 
-<img src="生成对抗网络.assets/image-20210818203916455.png" alt="image-20210818203916455" style="zoom:50%;" />
+<img src="../assets/image-20210818203916455.png" alt="image-20210818203916455" style="zoom:50%;" />
 
 2. 用 CGAN 来完成
 
 Generator 输入文本 + 分布，生成相应的图片；Discriminator 输入文本 + 采样图片，对其进行判别估分 (图片真实且和文本匹配得高分，图片是生成的得低分，图片和文本不匹配得低分)。
 
-<img src="生成对抗网络.assets/image-20210818204503158.png" alt="image-20210818204503158" style="zoom:50%;" />
+<img src="../assets/image-20210818204503158.png" alt="image-20210818204503158" style="zoom:50%;" />
 
-![image-20210818210451340](生成对抗网络.assets/image-20210818210451340.png)
+![image-20210818210451340](../assets/image-20210818210451340.png)
 
 CGAN 的 Discriminator 的两种设计：
 
-<img src="生成对抗网络.assets/image-20210818210840116.png" alt="image-20210818210840116" style="zoom:50%;" />
+<img src="../assets/image-20210818210840116.png" alt="image-20210818210840116" style="zoom:50%;" />
 
 ## StackGAN
 
 StackGAN 也是一种 GCAN，但它生成图片的过程是分段进行的，即先用一个 Generator 根据 conditional text 生成比较小的图，然后再用另一个 Generator 根据 conditional text 和这个比较小的图去生成更大的图，如果生成的图片还是不够大，则可以继续迭代这个过程，直到生成的图片足够大，而且每次用不同的 Generator 生成图片时，都会用相应的 Discriminator 去评估生成图片的好坏。在训练时，这些 Generator 都是叠加在一起训练的，即先训练第一个 Generator，然后叠加第二个 Generator 同时进行训练，接着再叠加更大的 Generator 一起训练。
 
-<img src="生成对抗网络.assets/image-20210818220815381.png" alt="image-20210818220815381" style="zoom: 50%;" />
+<img src="../assets/image-20210818220815381.png" alt="image-20210818220815381" style="zoom: 50%;" />
 
 ## image2image
 
@@ -311,17 +311,17 @@ image2image：用图片作为条件控制 Generator 产生特定的图片。
 
 输入条件图片，生成相应的图片，且要求该图片与文本对应的真实图片尽量接近。缺陷：相同的条件图片可能对应多种类型的图片，因此生成的图片就是这些图片的平均，从而让生成的图片模糊不清。
 
-<img src="生成对抗网络.assets/image-20210818222044065.png" alt="image-20210818222044065" style="zoom:50%;" />
+<img src="../assets/image-20210818222044065.png" alt="image-20210818222044065" style="zoom:50%;" />
 
 2. 用 CGAN 来完成
 
 Generator 输入条件图片 + 分布，生成相应的图片；Discriminator 输入条件图片 + 采样图片，对其进行判别估分 (图片越清晰且与条件图片越匹配则得到越高分)。存在缺陷：因为 Discriminator 只是要求生成图片要清晰，所以生成图片可能会存在一些奇怪的东西。解决方法：额外要求生成图片与真实图片尽量接近。
 
-<img src="生成对抗网络.assets/image-20210818222651147.png" alt="image-20210818222651147" style="zoom:50%;" />
+<img src="../assets/image-20210818222651147.png" alt="image-20210818222651147" style="zoom:50%;" />
 
 由于生成的图片可能很大，因此在用 Discriminator 进行判别时，它就需要完全输入整张图片来进行检查，这就会导致 Discriminator 的参数非常多，进而容易产生过拟合等情况。为了解决这个问题，有人提出 Patch GAN 的方法，即让 Discriminator 每次只检查图片的某一区域，也就是让 Discriminator 仅针对图片的一小片区域进行评分，这样的话，Discriminator 的参数就可以大大减小。
 
-<img src="生成对抗网络.assets/image-20210818223638483.png" alt="image-20210818223638483" style="zoom:50%;" />
+<img src="../assets/image-20210818223638483.png" alt="image-20210818223638483" style="zoom:50%;" />
 
 ## Speech Enhancement
 
@@ -329,11 +329,11 @@ Speech Enhancement：通过 GAN 消除声音信号中的杂讯，从而让语音
 
 1. 用传统监督方法实现：准备大量清晰的声音数据，然后将这些声音加入杂讯作为样本。训练 Generator 时，输入有杂讯的声音，生成相应的声音，且要求生成的声音与清晰的声音尽量接近。此外，由于声音数据和图片数据比较相似，因此可以直接套用 image2image 的架构来使用。缺陷：比较模糊。
 
-   <img src="生成对抗网络.assets/image-20210818225430402.png" alt="image-20210818225430402" style="zoom:50%;" />
+   <img src="../assets/image-20210818225430402.png" alt="image-20210818225430402" style="zoom:50%;" />
 
 2. 用 CGAN 来实现：只需要在传统方法上增加 Discriminator。Discriminator 输入有杂讯的声音作为条件，同时输入 Generator 生成的声音，然后对它们进行评分（生成声音越清晰且对应内容和有杂讯的声音的内容越相同则得越高分）。
 
-   <img src="生成对抗网络.assets/image-20210818225728784.png" alt="image-20210818225728784" style="zoom:50%;" />
+   <img src="../assets/image-20210818225728784.png" alt="image-20210818225728784" style="zoom:50%;" />
 
 ## Video Generation
 
@@ -343,7 +343,7 @@ Speech Enhancement：通过 GAN 消除声音信号中的杂讯，从而让语音
 
 对于 Discriminator：将输入 Generator 的这段视频与 Generator 生成的帧拼接成新的视频输入到 Discriminator，让 Discriminator 判断这段视频合不合理。
 
-<img src="生成对抗网络.assets/image-20210818230317604.png" alt="image-20210818230317604" style="zoom:50%;" />
+<img src="../assets/image-20210818230317604.png" alt="image-20210818230317604" style="zoom:50%;" />
 
 # Unsupervised CGAN
 
@@ -351,13 +351,13 @@ Speech Enhancement：通过 GAN 消除声音信号中的杂讯，从而让语音
 
 将 Unsupervised CGAN 用于 Style  transfer 有两种方法：
 
-<img src="生成对抗网络.assets/image-20210820214129342.png" alt="image-20210820214129342" style="zoom:40%;" /> 
+<img src="../assets/image-20210820214129342.png" alt="image-20210820214129342" style="zoom:40%;" /> 
 
 ### Direct transformation
 
 这种方法的 input 和 output 不能改变太大, 一般改变的是图片的颜色或纹理（画风）。具体思路为：
 
-<img src="生成对抗网络.assets/image-20210820214335891.png" alt="image-20210820214335891" style="zoom:40%;" />
+<img src="../assets/image-20210820214335891.png" alt="image-20210820214335891" style="zoom:40%;" />
 
 1. 假设要将风格 a 的图片转换成风格 b, 事先分别准备大量风格 a 和风格 b 的图片。
 2. 对于 Generator：输入风格 a 的图片, 输出风格 b 的图片。在训练时, 要求生成的图片能够尽量欺骗 Discriminator 说这是风格 b 的图片。
@@ -370,23 +370,23 @@ Speech Enhancement：通过 GAN 消除声音信号中的杂讯，从而让语音
 
 2. 将 Generator 输入和输出的图片分别输入到两个预训练好的 Encoder 中, 产生相应的两个 Embedding。在训练 Generator 时, 要求这两个 Embedding 尽量相近。
 
-   <img src="生成对抗网络.assets/image-20210820214746169.png" alt="image-20210820214746169" style="zoom:40%;" />
+   <img src="../assets/image-20210820214746169.png" alt="image-20210820214746169" style="zoom:40%;" />
 
 3. CycleGAN：增加一个 Generator 用于将初始 Generator 生成的风格 b 的图片转换成风格 a 的图片, 且要求这个图片和输入到初始 Generator 的图片尽量接近。CycleGAN 还可以进行双向训练, 即同时用相同的两个 Generator 进行两个方向上的转换：(风格 a ->风格 b -> 风格 a) + (风格 b ->风格 a -> 风格 b)。缺陷：初始 Generator 生成的风格 b 的图片可能会隐藏原图中的某些信息, 这些信息并不是被删除了, 只是被藏在了人看不见的地方。
 
-   <img src="生成对抗网络.assets/image-20210820214832118.png" alt="image-20210820214832118" style="zoom:40%;" />
+   <img src="../assets/image-20210820214832118.png" alt="image-20210820214832118" style="zoom:40%;" />
 
-   <img src="生成对抗网络.assets/image-20210820214923164.png" alt="image-20210820214923164" style="zoom:40%;" />
+   <img src="../assets/image-20210820214923164.png" alt="image-20210820214923164" style="zoom:40%;" />
 
 4. StarGAN：对于 Discriminator, 输入图片, 输出该图片是否真实以及所属风格类型; 对于 Generator, 输入图片和想要转换的目标风格, 输出目标风格类型的图片, 在训练时, ① 要求生成的图片能够欺骗 Discriminator 说出这是目标风格类型的且真实的图片, ② 还需要将生成的图片和原图片的风格输入回 Generator 来生成原风格类型的图片并要求和原图尽量接近。优点：可以仅用一个 Generator 就完成多种风格类型的转换。
 
-   <img src="生成对抗网络.assets/image-20210820215000471.png" alt="image-20210820215000471" style="zoom:50%;" />
+   <img src="../assets/image-20210820215000471.png" alt="image-20210820215000471" style="zoom:50%;" />
 
 ### Project to common space
 
 基本思想：将不同风格的图片嵌入到同一个向量空间中, 这个向量的不同维度就代表了图片的不同属性。在进行风格转换时, 先将图片嵌入为向量, 然后再用其它风格的解码器将向量转化为图片。具体思路为：
 
-<img src="生成对抗网络.assets/image-20210820221451894.png" alt="image-20210820221451894" style="zoom:50%;" />
+<img src="../assets/image-20210820221451894.png" alt="image-20210820221451894" style="zoom:50%;" />
 
 1. 假设有两种风格的图片。
 2. 针对每种风格都有相应的一个 Generator 和 Discriminator, 其中每个 Generator 都是一个 AutoEncoder。
@@ -399,19 +399,19 @@ Speech Enhancement：通过 GAN 消除声音信号中的杂讯，从而让语音
 
 1. 共享参数。让不同 Generator 的 Encoder 和 Decoder 的某些层的参数保持一致, 比如让 Encoder 末尾几层进行共享（前面不同参数的层用于区分不同风格, 后面相同参数的层用于将图片嵌入到相同空间中）以及让 Decoder 头几层进行共享。有一个极端情况是, 让所有 Encoder 都一样, 而输入图片的不同风格通过输入一个 tag 来判断。
 
-   <img src="./生成对抗网络.assets/image-20210820222830171.png" alt="image-20210820222830171" style="zoom:50%;" />
+   <img src="./../assets/image-20210820222830171.png" alt="image-20210820222830171" style="zoom:50%;" />
 
 2. 增加风格识别的 Discriminator。这个 Discriminator 用于判断 Encoder 产生的 Vector 是属于哪个风格的, 而 Encoder 在训练时要做的事情就是欺骗 Discriminator, 让 Discriminator 无法区分其产生的 Vector 是属于哪个风格的。当 Discriminator 无法进行区分时, 就意味着不同 Encoder 产生的 Vector 的不同维度所代表的含义都是相同的。
 
-   <img src="生成对抗网络.assets/image-20210820223720519.png" alt="image-20210820223720519" style="zoom:50%;" />
+   <img src="../assets/image-20210820223720519.png" alt="image-20210820223720519" style="zoom:50%;" />
 
 3. Cycle Consistency。将 Generator X 的 Encoder 产生的 Vector 用 Generator Y 的 Decoder 解码, 解码得到的图片输入到 Generator Y 的 Encoder, 让其产生另一个的 Vector, 将这个 Vector 输入到 Generator X 的Decoder 解码, 要求解码生成的图片与最初输入到 Generator X 的图片尽量接近。
 
-   <img src="生成对抗网络.assets/image-20210820224546927.png" alt="image-20210820224546927" style="zoom:50%;" />
+   <img src="../assets/image-20210820224546927.png" alt="image-20210820224546927" style="zoom:50%;" />
 
 4. Semantic Consistency。将 Generator X 的 Encoder 产生的 Vector 用 Generator Y 的 Decoder 解码, 解码得到的图片输入到 Generator Y 的 Encoder, 让其产生另一个的 Vector, 要求这个 Vector 和之前产生的 Vector 尽量接近。
 
-   <img src="生成对抗网络.assets/image-20210820225319372.png" alt="image-20210820225319372" style="zoom:50%;" />
+   <img src="../assets/image-20210820225319372.png" alt="image-20210820225319372" style="zoom:50%;" />
 
 ## Voice Conversion
 
@@ -423,37 +423,37 @@ General Framework of GAN：用于任意修改 GAN 中 Discriminator 衡量 Gener
 
 1. 定义 f-divergence：
 
-   <img src="生成对抗网络.assets/image-20210821212053369.png" alt="image-20210821212053369" style="zoom:50%;" />
+   <img src="../assets/image-20210821212053369.png" alt="image-20210821212053369" style="zoom:50%;" />
 
 2.  f-divergence 的取值必定大于等于 0, 且仅当分布 P 和 Q 相同时取零：
 
-   <img src="生成对抗网络.assets/image-20210821212113944.png" alt="image-20210821212113944" style="zoom:50%;" />
+   <img src="../assets/image-20210821212113944.png" alt="image-20210821212113944" style="zoom:50%;" />
 
 3. 当 f-divergence 中的 f 取不同的函式时, f-divergence 就会转换成其它类型的散度：
 
-   <img src="生成对抗网络.assets/image-20210821212330076.png" alt="image-20210821212330076" style="zoom:50%;" />
+   <img src="../assets/image-20210821212330076.png" alt="image-20210821212330076" style="zoom:50%;" />
 
 4. 用 f-divergence 的式子作为 GAN 的 Discriminator 的 Objective function：
 
    （注意, f* 为函式 f 的共轭函式, 如注释所示）
 
-   <img src="生成对抗网络.assets/image-20210821214319432.png" alt="image-20210821214319432" style="zoom:50%;" />
+   <img src="../assets/image-20210821214319432.png" alt="image-20210821214319432" style="zoom:50%;" />
 
    其中, t 的取值就是 Discriminator 输出 D(x), 而散度的取值必定大于等于当 t 等于某个 D(x) 时右式的结果（如下所示）, 并且当 D 是最优的那个时（也就是让右式的结果取得最大的 D）, 右式的结果就可以近似逼近散度的真实值（如上 "≈" 右边的式子所示）。
 
-   <img src="生成对抗网络.assets/image-20210821214928179.png" alt="image-20210821214928179" style="zoom:50%;" />
+   <img src="../assets/image-20210821214928179.png" alt="image-20210821214928179" style="zoom:50%;" />
 
 5. 当 f-divergence 中的 f 取不同类型的散度所对应的函式时, f-divergence 就会变成其它类型的散度, 进而让 Discriminator 可以用其它类型的散度来衡量两个分布的差距。而且, 想要变更散度类型, 实际上要做的事情就是替换 f\* 就行了（如下所示）。
 
-   <img src="生成对抗网络.assets/image-20210821220627701.png" alt="image-20210821220627701" style="zoom:50%;" />
+   <img src="../assets/image-20210821220627701.png" alt="image-20210821220627701" style="zoom:50%;" />
 
 不同散度对应的 Objective function、f、f\*：
 
-<img src="生成对抗网络.assets/image-20210821221418059.png" alt="image-20210821221418059" style="zoom: 50%;" />
+<img src="../assets/image-20210821221418059.png" alt="image-20210821221418059" style="zoom: 50%;" />
 
 fGAN 的应用：解决由散度类型选择不正确引起的 mode collapse 和 mode dropping 问题。
 
-<img src="生成对抗网络.assets/image-20210821222702714.png" alt="image-20210821222702714" style="zoom:40%;" />
+<img src="../assets/image-20210821222702714.png" alt="image-20210821222702714" style="zoom:40%;" />
 
 mode collapse：GAN 训练迭代非常多次后, 出现 Generator 的分布要比真实分布小且集中的情况, 这会导致 Generator 生成大量重复的图片。
 
@@ -465,25 +465,25 @@ mode dropping：不管 GAN 训练迭代多少次, Generator 的分布都只会�
 >
 > 1. 给定 t, 穷举每一个 x, 取其中最大的作为结果：
 >
->    <img src="生成对抗网络.assets/image-20210821213253868.png" alt="image-20210821213253868" style="zoom:50%;" />
+>    <img src="../assets/image-20210821213253868.png" alt="image-20210821213253868" style="zoom:50%;" />
 >
 > 2. 穷举每个 x 对应的函式 xt-f(x), 取最上面的边缘曲线作为 f*：
 >
->    <img src="生成对抗网络.assets/image-20210821213408258.png" alt="image-20210821213408258" style="zoom:50%;" />
+>    <img src="../assets/image-20210821213408258.png" alt="image-20210821213408258" style="zoom:50%;" />
 >
 > 3. 将 t 看作常数, 直接计算出 g(x)=xt-f(x) 取得最大值时 x 的取值, 然后代回 g(x) 作为 f* 的结果：
 >
->    <img src="生成对抗网络.assets/image-20210821213901512.png" alt="image-20210821213901512" style="zoom:50%;" />
+>    <img src="../assets/image-20210821213901512.png" alt="image-20210821213901512" style="zoom:50%;" />
 
 # Improving GAN
 
 提出问题：原始的 GAN 使用 JS 散度来衡量 Generator 分布和真实分布之间的差距。这会造成一个问题：只要两个分布之间不存在重叠, 那么它们之间的 JS 散度永远都是 log2, 这就会让 Generator 很困惑, 因为它被训练多少次都无法让 JS 散度减少。
 
-<img src="生成对抗网络.assets/image-20210822220237497.png" alt="image-20210822220237497" style="zoom:50%;" />
+<img src="../assets/image-20210822220237497.png" alt="image-20210822220237497" style="zoom:50%;" />
 
 此外, 在大多数情况下, 两个分布不会重叠, 原因：① Generator 分布和真实分布都是高维空间下的低维流形, 这使得两者之间的重叠可以忽略不计; ② 即使两者的分布具有重叠, 但也几乎无法从两者采样出相同的数据, 只要采样出来的数据不相同, 对于 JS 散度来说, 它们就是不重叠的两个分布。
 
-<img src="生成对抗网络.assets/image-20210822215906218.png" alt="image-20210822215906218" style="zoom:50%;" />
+<img src="../assets/image-20210822215906218.png" alt="image-20210822215906218" style="zoom:50%;" />
 
 下面是这个问题的一些解决方法。
 
@@ -495,7 +495,7 @@ Least Square GAN：用线性回归激活函数代替 sigmoid 激活函数。
 
 解决方法：① 让 Discriminator 训练得不要太好, 从而使两个分布得到的分值曲线保留有一些斜率; ② 采用 Least Square GAN 的方法（理由和 ① 一样）。
 
-<img src="生成对抗网络.assets/image-20210822220925191.png" alt="image-20210822220925191" style="zoom:50%;" />
+<img src="../assets/image-20210822220925191.png" alt="image-20210822220925191" style="zoom:50%;" />
 
 ## WGAN
 
@@ -507,15 +507,15 @@ Wasserstein GAN：用 wasserstein distance 代替 JS 散度来衡量两个分布
 
 但实际情况下, 搬运的方案（称为 moving plan）有非常多, 而且不同的搬运方案所得到的平均距离很可能不同, 这时就采用其中最小的平均距离作为 wasserstein distance。
 
-![image-20210822223156060](生成对抗网络.assets/image-20210822223156060.png)
+![image-20210822223156060](../assets/image-20210822223156060.png)
 
 一个搬运方案可以看成一个矩阵, 矩阵中的每个元素的值可以看作是纵轴对应的分布需要搬多少东西到横轴对应分布的位置上（反过来也是一样的）。因此, 一个搬运方案的平均距离就被定义为纵轴每个值搬运到横轴每个位置上的量与此次搬运的距离的乘积的总和。
 
-<img src="生成对抗网络.assets/image-20210822223521737.png" alt="image-20210822223521737" style="zoom:50%;" />
+<img src="../assets/image-20210822223521737.png" alt="image-20210822223521737" style="zoom:50%;" />
 
 wasserstein distance 对于 JS 散度的优势： 只要两个分布不重叠, 那么 JS 散度的值就永远是 log2, 但对于 wasserstein distance 来说, 只要两个分布之间的距离不同和形状不同, 那么 wasserstein distance 就不一样。
 
-<img src="生成对抗网络.assets/image-20210822224314143.png" alt="image-20210822224314143" style="zoom:50%;" />
+<img src="../assets/image-20210822224314143.png" alt="image-20210822224314143" style="zoom:50%;" />
 
 ### 如何改进？
 
@@ -523,7 +523,7 @@ wasserstein distance 对于 JS 散度的优势： 只要两个分布不重叠, �
 
 首先将 Discriminator 的 Objective function 改写成如下的式子, 然后限制 Discriminator 这个网络所对应的 function 为 1-Lipschitz 函式。经过这两个修改, 就可以让 Discriminator 训练后得到的 loss 就是 wasserstein distance。
 
-<img src="生成对抗网络.assets/image-20210822225658574.png" alt="image-20210822225658574" style="zoom:67%;" />
+<img src="../assets/image-20210822225658574.png" alt="image-20210822225658574" style="zoom:67%;" />
 
 > 什么是 lipschitz function？
 >
@@ -531,31 +531,31 @@ wasserstein distance 对于 JS 散度的优势： 只要两个分布不重叠, �
 >
 > 如果我们让 k=1, 那么就是 1-Lipschitz 函式。
 >
-> ![image-20210822230032036](生成对抗网络.assets/image-20210822230032036.png)
+> ![image-20210822230032036](../assets/image-20210822230032036.png)
 
 如何让 Discriminator 做到 1-Lipschitz？
 
 #### Weight Clipping
 
-![image-20210822230410251](生成对抗网络.assets/image-20210822230410251.png)
+![image-20210822230410251](../assets/image-20210822230410251.png)
 
 #### Improved WGAN (WGAN-GP)
 
 在上述的 Objective function 后面增加一项（被红线划掉的）, 该项表示任意 x 处的斜率都不能大于 1, 如果大于 1, 则会受到惩罚。在实际情况下, 不可能限制所有 x 处的斜率, 因为 x 太多了, 因此我们只能随机采样某些区域内的 x 进行限制, 因此将新增项改为黑色箭头所指的式子。
 
-![image-20210822230547759](生成对抗网络.assets/image-20210822230547759.png)
+![image-20210822230547759](../assets/image-20210822230547759.png)
 
 如何采样 x 呢？一个做法是在 $P_G$ 和 $P_{data}$ 上随机采样两点, 然后在这两点之间随机采样一点作为 x。为什么？因为这部分区域的 x 属于 $P_G$ 向 $P_{data}$ 过渡的区域, 他们可以很好地影响 $P_G$ 如何搬移到 $P_{data}$ 上。
 
-<img src="生成对抗网络.assets/image-20210822230723214.png" alt="image-20210822230723214" style="zoom:50%;" />
+<img src="../assets/image-20210822230723214.png" alt="image-20210822230723214" style="zoom:50%;" />
 
 更进一步：将新增项进一步修改为如下所示地式子, 这个式子表示希望所有被采样的 x 处的斜率都接近 1。原因：这么做让实验的表现更好了。
 
-<img src="生成对抗网络.assets/image-20210822231806906.png" alt="image-20210822231806906" style="zoom: 50%;" />
+<img src="../assets/image-20210822231806906.png" alt="image-20210822231806906" style="zoom: 50%;" />
 
 #### Spectrum Norm
 
-![image-20210822232040567](生成对抗网络.assets/image-20210822232040567.png)
+![image-20210822232040567](../assets/image-20210822232040567.png)
 
 ### 算法实现
 
@@ -566,7 +566,7 @@ wasserstein distance 对于 JS 散度的优势： 只要两个分布不重叠, �
 3. 在 Discriminator 的 Objective function 的后面增加用于限制 Discriminator 为 1-Lipschitz 的项;
 4. 修改 Generator 的 Objective function。
 
-<img src="生成对抗网络.assets/image-20210822232324731.png" alt="image-20210822232324731" style="zoom: 50%;" />
+<img src="../assets/image-20210822232324731.png" alt="image-20210822232324731" style="zoom: 50%;" />
 
 ## EBGAN
 
@@ -574,19 +574,19 @@ wasserstein distance 对于 JS 散度的优势： 只要两个分布不重叠, �
 
 好处：仅需要用真实数据进行训练, 而且因为不需要 Generator 的数据, 所以可以进行预训练。
 
-<img src="生成对抗网络.assets/image-20210822232814928.png" alt="image-20210822232814928" style="zoom: 50%;" />
+<img src="../assets/image-20210822232814928.png" alt="image-20210822232814928" style="zoom: 50%;" />
 
 需要注意的地方：在 EBGAN 中, 因为 Discriminator 的目的是让 real data 的分值尽量大, 而让 generator data 的分值尽量小, 总的来说就是让 Objective function 的 value 尽量大, 所以可能会出现一种情况：给任意输入的图片的分值都很低, 因为 real data 的部分不多, 所以可以牺牲掉, 只要让所有输入的给以低分, 就可以得到一个很高的 Objective function 的 value。
 
 解决方法：限制 generator data 的分值, 仅仅让它低于某一界限就可以了。
 
-<img src="生成对抗网络.assets/image-20210822233029131.png" alt="image-20210822233029131" style="zoom:50%;" />
+<img src="../assets/image-20210822233029131.png" alt="image-20210822233029131" style="zoom:50%;" />
 
 ## LSGAN
 
 在通常的 GAN 中, 都是让 real data 的分值尽量高, 而让 generator data 的分值尽量低。但在 Loss-sensitive GAN 的做法中, 首先评估一下 generator data, 如果已经 generator data 已经很接近 real data 了, 则应该给它一个比较高的低分, 如果 generator data 与 real data 还是很远, 则应该给它一个很低的低分。
 
-<img src="生成对抗网络.assets/image-20210822234305319.png" alt="image-20210822234305319" style="zoom: 50%;" />
+<img src="../assets/image-20210822234305319.png" alt="image-20210822234305319" style="zoom: 50%;" />
 
 # Feature Extraction
 
@@ -596,7 +596,7 @@ InfoGAN：让 Generator input 的 vector 各个维度的含义明确。
 
 InfoGAN 的做法：
 
-<img src="生成对抗网络.assets/image-20210824144551045.png" alt="image-20210824144551045" style="zoom:50%;" />
+<img src="../assets/image-20210824144551045.png" alt="image-20210824144551045" style="zoom:50%;" />
 
 1. 让 Generator input 的 vector Z 分为两个更小的 vector：比如把前几维看作是 vector C, 后几维看成 vector Z'。InfoGAN 的目的就是通过训练可以让 C 的各个维度代表了 Generator 生成的图片的某些特征, 改变这些维度可以给生成图片带来明确的影响; 而 Z' 表示一些随机的东西, 它的各个维度是无法被解释的, 即无法明确知道改变这些维度会给生成图片带来什么影响, 因此 Z' 是 InfoGAN 不关心的部分。
 2. Discriminator 的任务是判断 Generator 生成的图片真不真实, 它的作用一方面是让图片清晰, 另一方面是避免 Generator 通过直接把 C 的信息复制到生成图片上来迷惑 Classifier。
@@ -611,7 +611,7 @@ InfoGAN 的做法：
 
 从用 VAE 来强化 GAN 的角度来看：在 GAN 前面增加了一个 Encoder, 这个做法可以让 GAN 从一开始就知道如何生成图片, 因为它的目标不仅是要欺骗 Discriminator, 还要把图片进行还原。
 
-<img src="生成对抗网络.assets/image-20210824152118876.png" alt="image-20210824152118876" style="zoom:50%;" />
+<img src="../assets/image-20210824152118876.png" alt="image-20210824152118876" style="zoom:50%;" />
 
 算法流程：
 
@@ -619,11 +619,11 @@ InfoGAN 的做法：
 2. 更新 Decoder 的目标是 ① 减少重构误差; ② 欺骗 Discriminator。
 3. 更新 Discriminator 的目标是 ① 增加真实图片的分数; ② 减少生成图片和重构图片的分数。
 
-<img src="生成对抗网络.assets/image-20210824152336069.png" alt="image-20210824152336069" style="zoom: 67%;" />
+<img src="../assets/image-20210824152336069.png" alt="image-20210824152336069" style="zoom: 67%;" />
 
 改进 Discriminator：让 Discriminator 不仅识别图片是否真实, 还要让 Discriminator 分辨输入图片是重构的, 还是生成的。而 Generator 目的就是欺骗 Discriminator, 让其同时认为重构图片和生成图片都是真实的。
 
-<img src="生成对抗网络.assets/image-20210824152408901.png" alt="image-20210824152408901" style="zoom:67%;" />
+<img src="../assets/image-20210824152408901.png" alt="image-20210824152408901" style="zoom:67%;" />
 
 ## BiGAN
 
@@ -634,14 +634,14 @@ BiGAN 的方法：
 3. Decoder 用于将随机 ceode 解码成生成图片;
 4. Discriminator：输入 code 和 image, 判断这一对输入是来自于 Encoder（真实的）, 还是来自于 Decoder（生成的）。
 
-<img src="生成对抗网络.assets/image-20210824155814738.png" alt="image-20210824155814738" style="zoom:50%;" />
+<img src="../assets/image-20210824155814738.png" alt="image-20210824155814738" style="zoom:50%;" />
 
 算法流程：
 
 1. 更新 Discriminator 的目标是 ① 增加来自于 Encoder 的 pair 的分数; ② 减少来自于 Decoder 的 pair 的分数;
 2. 同时训练 Encoder 和 Decoder, 目标是 ① 减少来自于 Encoder 的 pair 的分数; ② 增加来自于 Decoder 的 pair 的分数。
 
-<img src="生成对抗网络.assets/image-20210824160708391.png" alt="image-20210824160708391" style="zoom:67%;" />
+<img src="../assets/image-20210824160708391.png" alt="image-20210824160708391" style="zoom:67%;" />
 
 算法原理：Discriminator 用来衡量 Encoder 和 Decoder 的两个 pair 对应分布之间的差距, 通过缩小这个差距, 就可以让这两个分布越来越接近。也就是说, BiGAN 的目的和原始 GAN 是一样的, 也就是让生成分布尽量接近真实分布。
 
@@ -657,7 +657,7 @@ BiGAN 的方法：
 6. 通过欺骗 Discriminator 来训练 Generator。
 7. Triple GAN 是一个半监督方法, 可以通过 Classifier 生成更多的图片和标签对去训练 Discriminator。
 
-<img src="生成对抗网络.assets/image-20210824165556653.png" alt="image-20210824165556653" style="zoom:50%;" />
+<img src="../assets/image-20210824165556653.png" alt="image-20210824165556653" style="zoom:50%;" />
 
 ## Domain-adversarial training
 
@@ -667,7 +667,7 @@ Domain-adversarial training 用于提取图片的特征。
 2. domain classifier（Discriminator）：用于判断输入的特征向量属于哪个 domain;
 3. label predictor（Discriminator）：用于判断输入的特征向量属于哪个 label。
 
-<img src="生成对抗网络.assets/image-20210824171023894.png" alt="image-20210824171023894" style="zoom:50%;" />
+<img src="../assets/image-20210824171023894.png" alt="image-20210824171023894" style="zoom:50%;" />
 
 举例说明：抽取语音的特征, 比如抽取文本特征。
 
@@ -675,7 +675,7 @@ Domain-adversarial training 用于提取图片的特征。
 2. Speaker Classifier：用于分辨输入的两个语音特征是同一个人说的, 还是不同的人说的。
 3. 只要 Phonetic Encoder 可以欺骗 Speaker Classifier, 那就说明它所抽取的特征中不包含语者的特征, 因为不包含这个特征, 所以 Speaker Classifier 就无法进行分辨。
 
-<img src="生成对抗网络.assets/image-20210824172817891.png" alt="image-20210824172817891" style="zoom:50%;" />
+<img src="../assets/image-20210824172817891.png" alt="image-20210824172817891" style="zoom:50%;" />
 
 # Application
 
@@ -687,11 +687,11 @@ Domain-adversarial training 用于提取图片的特征。
 
 方法一：通过调整 z, 希望得到这个 z 生成的图片 G(z) 和目标图片 $x^T$ 的误差（可通过另一个网络或 pixel-wise 的方法来得到）最小, 则这个 z 就是图片 $x^T$ 对应的 code。
 
-<img src="生成对抗网络.assets/image-20210830134950157.png" alt="image-20210830134950157" style="zoom:50%;" />
+<img src="../assets/image-20210830134950157.png" alt="image-20210830134950157" style="zoom:50%;" />
 
 方法二：AE+GAN。训练 Encoder, 使得输入某张图片可以返回响应的 code, 将已经训练好的 Generator 作为 Decoder, 其中 Encode 的初始参数可以直接使用 Discriminator 的参数。
 
-<img src="生成对抗网络.assets/image-20210830135538774.png" alt="image-20210830135538774" style="zoom:50%;" />
+<img src="../assets/image-20210830135538774.png" alt="image-20210830135538774" style="zoom:50%;" />
 
 方法三：结合方法一和二。将方法二的结果作为方法一的初始化参数。
 
@@ -699,11 +699,11 @@ Domain-adversarial training 用于提取图片的特征。
 
 方法一：找到图片的每种特征的代表 code, 用这些 code 之间的差作为修图的增量。比如将短发调整为短发, 首先采样出大量长发图片和短发图片的 code, 然后用它们的平均作为长发特征和短发特征的代表 code, 将这两个 code 的差作为 $z_{long}$。若我们有一张短发的图片, 用它的 code 加上 $z_{long}$ 就可以得到它对应的长发图片的 code, 输入 Generator 就可以得到修图后的结果。
 
-<img src="生成对抗网络.assets/image-20210830141153782.png" alt="image-20210830141153782" style="zoom:50%;" />
+<img src="../assets/image-20210830141153782.png" alt="image-20210830141153782" style="zoom:50%;" />
 
 方法二：通过 optimization 的方法来求解。
 
-<img src="生成对抗网络.assets/image-20210830141815411.png" alt="image-20210830141815411" style="zoom:50%;" />
+<img src="../assets/image-20210830141815411.png" alt="image-20210830141815411" style="zoom:50%;" />
 
 ### super resolution
 
@@ -713,7 +713,7 @@ Domain-adversarial training 用于提取图片的特征。
 
 修补图片空白。具体方法和 CGAN 一样, 希望输入残缺的图片, 产生完整的图片, 为了做到这点, 我们只需要收集大量完整的图片和对应残缺的图片（将完整图片扣掉一部分即可得到）作为 pair 去训练 GAN。
 
-<img src="生成对抗网络.assets/image-20210830142440862.png" alt="image-20210830142440862" style="zoom:50%;" />
+<img src="../assets/image-20210830142440862.png" alt="image-20210830142440862" style="zoom:50%;" />
 
 # Sequence Generation
 
@@ -727,7 +727,7 @@ RNN+AutoEncoder
 
 缺陷：训练数据是一对句子, 训练的目的是输入上一个句子, 使得输出这对句子中的下一个句子的似然值最大。因此, 会出现这样一个问题, 即使输出的句子与输入的句子很匹配, 但由于和训练时所对应的句子不相似, 模型会认为输出的句子不好; 但当输出的句子与输入的句子很不匹配, 但由于和训练时所对应的句子较相似, 模型会认为输出的句子较好。
 
-<img src="生成对抗网络.assets/image-20210902232220520.png" alt="image-20210902232220520" style="zoom: 50%;" />
+<img src="../assets/image-20210902232220520.png" alt="image-20210902232220520" style="zoom: 50%;" />
 
 ### RL 的方法
 
@@ -735,13 +735,13 @@ RNN+AutoEncoder
 
 但这个方法本身也会有一个缺陷：需要人参与。
 
-<img src="生成对抗网络.assets/image-20210904135219963.png" alt="image-20210904135219963" style="zoom:50%;" />
+<img src="../assets/image-20210904135219963.png" alt="image-20210904135219963" style="zoom:50%;" />
 
-<img src="生成对抗网络.assets/image-20210904141532836.png" alt="image-20210904141532836" style="zoom:50%;" />
+<img src="../assets/image-20210904141532836.png" alt="image-20210904141532836" style="zoom:50%;" />
 
 > Policy Gradient：采用最大化 reward 来代替最小化 loss 来进行反向传递。
 >
-> <img src="./生成对抗网络.assets/policy_gradient.png" alt="policy_gradient" style="zoom:50%;" />
+> <img src="./../assets/policy_gradient.png" alt="policy_gradient" style="zoom:50%;" />
 >
 > [蒙特卡罗树搜索算法](https://www.bilibili.com/video/BV1JD4y1Q7mV?from=search&seid=13664852191139097487&spm_id_from=333.337.0.0)：通过四个步骤（选择、扩展、模拟、反向传播）的不断迭代来决定下一步的决策。
 >
@@ -754,9 +754,9 @@ RNN+AutoEncoder
 
 ### GAN 的方法
 
-<img src="生成对抗网络.assets/image-20210904143654375.png" alt="image-20210904143654375" style="zoom:50%;" />
+<img src="../assets/image-20210904143654375.png" alt="image-20210904143654375" style="zoom:50%;" />
 
-<img src="生成对抗网络.assets/image-20210904143713294.png" alt="image-20210904143713294" style="zoom:50%;" />
+<img src="../assets/image-20210904143713294.png" alt="image-20210904143713294" style="zoom:50%;" />
 
 缺陷：由于 Generation 是一个 Rnn, 输出的句子中的每个词都是通过 sample 产生的（对于 Discriminator 来说, 就是接收了一个随机的输入）, 因此无法直接进行反向传递。
 
@@ -764,17 +764,17 @@ RNN+AutoEncoder
 
 直接将 Generation 输出的 word distribution 作为 Discriminator 的输入。存在问题：由于训练 Discriminator 时, 真实标签采用 one-hot encoding, 而 Geneartor 的输出是 distribution, 因此 Discriminator 学到的可能是凡是某一维度为 1, 其它维度为 0 的向量就是真实的, 而其它的就是生成的, 从而让 Discriminator 失去了辨别真假的能力。解决方法：采用 WGAN。
 
-<img src="生成对抗网络.assets/image-20210904150619197.png" alt="image-20210904150619197" style="zoom:50%;" />
+<img src="../assets/image-20210904150619197.png" alt="image-20210904150619197" style="zoom:50%;" />
 
 - 解决方法二
 
 将 Discriminator 的输出作为 reward, 用 Policy Gradient 的方式来训练 Generator（将 Discriminator 从传向传递中移除）。要实现这个方法, 只需要将 RL 方法中的人换成 Discriminator 就可以了。
 
-<img src="生成对抗网络.assets/image-20210904151709327.png" alt="image-20210904151709327" style="zoom:50%;" />
+<img src="../assets/image-20210904151709327.png" alt="image-20210904151709327" style="zoom:50%;" />
 
 进一步提升：Discriminator 是对整个句子评价来产生 reward 的, 这会导致一个问题, 如果某个句子整体来说是不好的, 那么 Generator 会选择让句子中所有单词出现的概率都减小, 但若该句子中某些单词是不错的, 它还是会因此而被减少出现的概率。所以有一个更好的做法是让 Discriminator 对每一个词都进行评价, 让 Generator 可以针对每个词的概率来进行反向传递（整体 reward 的计算修改为下图所示的样子）。
 
-<img src="生成对抗网络.assets/image-20210904152825423.png" alt="image-20210904152825423" style="zoom:50%;" />
+<img src="../assets/image-20210904152825423.png" alt="image-20210904152825423" style="zoom:50%;" />
 
 ## Unsupervised Conditional
 
@@ -782,17 +782,17 @@ RNN+AutoEncoder
 
 - 可以直接使用 Cycle GAN 来实现,：
 
-<img src="生成对抗网络.assets/image-20210904231146825.png" alt="image-20210904231146825" style="zoom: 50%;" />
+<img src="../assets/image-20210904231146825.png" alt="image-20210904231146825" style="zoom: 50%;" />
 
 但有一个问题：Generator 的 output 是 discrete distribution, 需要一个 sample 的过程来产生句子, 因此与其它 Generator 或 Discriminator 相连时无法进行反向传递。
 
 解决办法：让 Generator 直接输出每个词的 embedding。
 
-<img src="生成对抗网络.assets/image-20210905102235274.png" alt="image-20210905102235274" style="zoom:50%;" />
+<img src="../assets/image-20210905102235274.png" alt="image-20210905102235274" style="zoom:50%;" />
 
 - 另一种实现方法：
 
-<img src="生成对抗网络.assets/image-20210905102618038.png" alt="image-20210905102618038" style="zoom:50%;" />
+<img src="../assets/image-20210905102618038.png" alt="image-20210905102618038" style="zoom:50%;" />
 
 ### Abstractive Summerization
 
@@ -800,13 +800,8 @@ RNN+AutoEncoder
 >
 > Abstractive Summerization：文章的摘要由模型产生, 而不是通过抽取文章句子来组合得到的。
 
-<img src="生成对抗网络.assets/image-20210905120657721.png" alt="image-20210905120657721" style="zoom:50%;" />
+<img src="../assets/image-20210905120657721.png" alt="image-20210905120657721" style="zoom:50%;" />
 
 # Evaluation
 
-
-
-
-
-
-
+待施工...

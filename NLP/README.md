@@ -6,7 +6,7 @@
 
 首先，通过编码器，源语言序列“我对你感到满意”经过多层神经网络编码生成一个向量表示，即图中的向量（0.2，-1，6，5，0.7，-2）。再将该向量作为输入送到解码器中，解码器把这个向量解码成目标语言序列。注意，目标语言序列的生成是逐词进行的（虽然图中展示的是解码器一次生成了整个序列，但是在具体实现时是由左至右逐个单词地生成目标语译文），产生某个词的时候依赖之前生成的目标语言的历史信息，直到产生句子结束符为止。
 
-<img src="NLP.assets/image-20210618163211202.png" alt="image-20210618163211202" style="zoom:67%;" />
+<img src="../assets/image-20210618163211202.png" alt="image-20210618163211202" style="zoom:67%;" />
 
 神经机器翻译存在的挑战：
 
@@ -147,21 +147,21 @@ Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddi
 
 使用注意力可以让模型关注在更为关键的局部信息上，而忽略那些无效的信息，进而提高信息的处理效率。注意力应用在视觉上，机器可以注意到某一个局部区域，应用在语言上，就是注意到某一个或多个关键词汇。 基于我们不同的任务类型，机器通过注意力获取的词汇区域就有所不同。比如对于一段销售所说的话，男生的注意力模型和女生的注意力模型就有所不同：
 
-<img src="NLP.assets/image-20210620175658627.png" alt="image-20210620175658627" style="zoom:67%;" />
+<img src="../assets/image-20210620175658627.png" alt="image-20210620175658627" style="zoom:67%;" />
 
 对于男生，他更多注意到的是关于性能和配置的信息，而女生则更注意的是价格和颜色的信息。有了注意力，我们提取我们想要的信息的能力就会被大大增强，并且在获取了这些信息后，我们就可以用它来预测购买意向，或者生成下一句回复销售员的话。拿生成回复来举例：
 
-<img src="NLP.assets/image-20210620175503337.png" alt="image-20210620175503337" style="zoom: 33%;" />
+<img src="../assets/image-20210620175503337.png" alt="image-20210620175503337" style="zoom: 33%;" />
 
 假设我们使用的是女生的注意力模型。首先模型得先通读一下这段文字，毕竟如果没有上下文的信息，模型也不知道究竟要注意些什么。通读完之后，我们可以得到一个关于这句话的理解，也就是句向量。句向量属于全局信息，接着我们通过注意力获取的是局部信息，我们可以将全局信息配合局部信息一起来生成每一个回复的词。比如，女生回复的"樱桃红"可以是注意到的"亮樱桃红色"这句话而回复的，而"买它"则可能是注意到"千元"和"降价"促成的回复。 
 
-<img src="NLP.assets/luong_attention.png" alt="translation attention illustration" style="zoom:67%;" />
+<img src="../assets/luong_attention.png" alt="translation attention illustration" style="zoom:67%;" />
 
 > 与原始 Seq2seq 模型的主要区别：参与到 decoder 中的语义向量不再是由 encoder 最后时间步产生的隐状态和输出构成的静态句向量（静态是指指导 decoder 每一步进行翻译的语义向量都是同一个句向量，不会随着时间的推移而变化），而是由 decoder 每一步的状态与 encoder 所有时刻的状态共同生成的动态语义向量（动态是指指导 decoder 每一步进行翻译的语义向量会随着 decoder 每一步的状态而改变），并且该动态语义向量与 decoder 此时此刻的状态紧密相连（体现出注意力的地方）。
 >
 > 在 Seq2seq 的 Bahdanau Attention 的模型中：
 >
-> <img src="NLP.assets/attention_mechanism.jpg" alt="attention mechanism" style="zoom:60%;" />
+> <img src="../assets/attention_mechanism.jpg" alt="attention mechanism" style="zoom:60%;" />
 >
 > 1. Encoder：每一个时间步的输出由上一时间步的隐状态（初始状态为随机初始化的一个隐状态）和输入到当前时间步的词向量决定。
 >
@@ -183,17 +183,17 @@ Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddi
 >
 > 1. 计算语义向量的不同：
 >
->    <img src="NLP.assets/image-20210621154259669.png" alt="image-20210621154259669" style="zoom:50%;" /> 
+>    <img src="../assets/image-20210621154259669.png" alt="image-20210621154259669" style="zoom:50%;" /> 
 >
 > 2. 计算此刻状态和输出的不同：
 >
->    <img src="NLP.assets/image-20210621154334469.png" alt="image-20210621154334469" style="zoom:50%;" /> 
+>    <img src="../assets/image-20210621154334469.png" alt="image-20210621154334469" style="zoom:50%;" /> 
 >
 > 3. Bahdanau 的 encoder 为双向 RNN，每一时刻的输出为上下两个 RNN 的状态拼接；Luong 的 encoder 为双层 RNN，每一时刻的输出直接采用上层 RNN 的输出。
 
 可视化举例：在生成不同单词时的注意力分布（纵轴为生成的序列，横轴为源序列）
 
-<img src="NLP.assets/seq2seq_attention_res.png" alt="seq2seq date attention" style="zoom:80%;" />
+<img src="../assets/seq2seq_attention_res.png" alt="seq2seq date attention" style="zoom:80%;" />
 
 ## 注意力的嵌套
 
@@ -213,25 +213,25 @@ Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddi
 
 Transformer 就是将注意力不断地叠加，即在观察句子得到一层注意力后，继续在这层注意力的基础上观察注意句子，一遍又一遍地注意到句子的不同部分，使得对句子的理解不断升华，提炼出对句子更深层的理解。可见，Transformer 的核心就是注意力的嵌套。Transformer 是一个 Encoder-Decoder 模型，但其内部的框架完全和 RNN Encoder-Decoder 模型完全不同，虽然注意力的叠加也可以应用到 RNN 模型上，但由于时序的原因，RNN 模型不能并行训练，再加上注意力的叠加，训练起来会极其缓慢，因此 RNN 不适合采用注意力叠加的方法，所以 Transformer 也没有采取 RNN layer 来进行训练。Transformer 模型的具体框架如下所示：
 
-<img src="NLP.assets/image-20210622230811600.png" alt="image-20210622230811600" style="zoom:67%;" />
+<img src="../assets/image-20210622230811600.png" alt="image-20210622230811600" style="zoom:67%;" />
 
 ### Transformer 的流程
 
 Transformer 模型由 N 层 Encoder 加上 N 层 Decoder 组成，模型先通过 Encoder 进行 N 次 attention 的叠加（一层 Encoder 就会产生一次 attention），这个叠加后的 attention 就会作为 Encoder 的输出，输出到 Decoder 中，由 Decoder 在这个叠加后的 attention 的基础上继续进行 N 次 attention 的叠加，叠加的结果经过一些处理后，就可以作为词进行输出。
 
-<img src="NLP.assets/transformer_encoder_decoder.png" alt="transformer encoder decoder" style="zoom:67%;" />
+<img src="../assets/transformer_encoder_decoder.png" alt="transformer encoder decoder" style="zoom:67%;" />
 
 ### FFNN layer
 
 在 Transformer 的 Encoder 和 Decoder 的最后都分别增加了 Feed Forward Network，其目的是给 attention output 增加非线性变换，提高模型的表现力。
 
-<img src="NLP.assets/Transformer_decoder.png" alt="img" style="zoom:67%;" />
+<img src="../assets/Transformer_decoder.png" alt="img" style="zoom:67%;" />
 
 ### 生成注意力的算法
 
 这个算法主要关注三样东西，即 Query（查询向量）、Key（键向量）和 Value（值向量）。Query 表示源序列或生成序列中作为观察者的每一个词，Key 表示源序列或生成序列中每一个词的索引，Value 表示源序列或生成序列中每一个词的关注度。比如我们要用源序列中的某一个词 w 去注意源序列（称为 self-attention）：
 
-<img src="./NLP.assets/image-20210622233146597.png" alt="image-20210622233146597" style="zoom:67%;" />
+<img src="./../assets/image-20210622233146597.png" alt="image-20210622233146597" style="zoom:67%;" />
 
 ① 用词 w 的 Query 与源序列中每一个词的 Key 做 MatMul 运算，得到词 w 对源序列中每一个词的 attention 分值，这个分值决定了词 w 需要给予源序列中每一个词多少关注度。
 
@@ -241,17 +241,17 @@ Transformer 模型由 N 层 Encoder 加上 N 层 Decoder 组成，模型先通�
 
 ④ 将这些加权向量进行求和，即可得到词 w 对应的 self-attention 的输出结果。
 
-<img src="NLP.assets/self-attention-output.png" alt="img" style="zoom:50%;" />
+<img src="../assets/self-attention-output.png" alt="img" style="zoom:50%;" />
 
 下面是多个词同时进行 self-attention 计算的公式：
 
-<img src="NLP.assets/self-attention-matrix-calculation-2.png" alt="img" style="zoom:40%;" />
+<img src="../assets/self-attention-matrix-calculation-2.png" alt="img" style="zoom:40%;" />
 
 > 通俗解释：想象这是一个相亲画面，我有我心中喜欢女孩的样子（Query），我会按照这个心目中的形象浏览各种女孩的照片（Key），如果一个女生样貌很像我心中的样子，我就注意这个人， 并安排一段稍微长一点的时间阅读她的详细材料（Value），反之我就安排少一点时间看她的材料。这样我就能将注意力放在我认为满足条件的候选人身上了。 我心中女神的样子就是 Query，我拿着它（Query）去和所有的候选人（Key）做对比，得到一个要注意的程度（attention score）， 根据这个程度判断我要花多久时间去仔细阅读每个候选人的材料（Value）。
 
 另一种关于  self-attention 的解释图：
 
-<img src="NLP.assets/image-20210624224759961.png" alt="image-20210624224759961" style="zoom:45%;" />
+<img src="../assets/image-20210624224759961.png" alt="image-20210624224759961" style="zoom:45%;" />
 
 ### 三种 attention 层
 
@@ -273,13 +273,13 @@ Transformer 中包含了三种 attention 层：
 
 在计算同一层的 attention 时，同时计算多次 attention（采用不同的 matrix 去计算 Q、K 和 V 即可），然后将它们进行汇总得到该层 attention 的输出。（接相亲的例子）这就像我同时找了多个人帮我注意女孩一样，这几个人帮我一轮一轮地观察之后，我在汇总所有人的理解，统一进行判断。这也有点像"三个臭皮匠赛过诸葛亮"的意思。
 
-<img src="NLP.assets/transformer_paper_multihead.png" alt="transformer multihead" style="zoom:67%;" />
+<img src="../assets/transformer_paper_multihead.png" alt="transformer multihead" style="zoom:67%;" />
 
 ### Positional Encoding
 
 Transformer 本身没有采用 rnn 作为内部结构，那么它是如何理解输入语句中词的顺序呢？Transformer 为每一个词新增了一个位置向量，这些向量遵循某种模式来决定词的位置，然后用这些位置向量加上对应的词向量，则可以为源序列中的每一个词产生一种具有位置关系的向量，用这个向量代替词向量进行训练，即可解决词序问题。
 
-<img src="NLP.assets/image-20210623130709720.png" alt="image-20210623130709720" style="zoom:30%;" />
+<img src="../assets/image-20210623130709720.png" alt="image-20210623130709720" style="zoom:30%;" />
 
 > 参考文章：[Transformer 中的 position embedding - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/166244505)
 >
@@ -289,7 +289,7 @@ Transformer 本身没有采用 rnn 作为内部结构，那么它是如何理解
 
 在 Transformer 的模型中，每层 layer 之间都加入了残差和规范化的计算（即 Add & Normalize layer），其目的就是为了加速模型的训练过程。
 
-<img src="NLP.assets/transformer_resideual_layer_norm_3.png" alt="img" style="zoom:50%;" />
+<img src="../assets/transformer_resideual_layer_norm_3.png" alt="img" style="zoom:50%;" />
 
 某层输出的残差和规范化的计算过程：将该层输出与输入相加的结果进行规范化即可。
 
@@ -309,7 +309,7 @@ Mask 的两种作用：
 
 在 attention 的计算过程中，mask 的执行时机均是在 Q 和 K 进行 MatMul 和 Scale 运算之后 SoftMax 运算之前，具体如下图所示：
 
-<img src="NLP.assets/image-20210622233146597.png" alt="image-20210622233146597" style="zoom:67%;" />
+<img src="../assets/image-20210622233146597.png" alt="image-20210622233146597" style="zoom:67%;" />
 
 ==如何进行 padding mask？==
 
@@ -375,17 +375,17 @@ Mask 的两种作用：
 
 ELMo 是一个深度上下文相关的词嵌入言模型，使用了多层双向的 LSTM 编码器。ELMo 解决了 word2vec 不能表达一词多义的问题，并且能够在较低层捕获到语法信息，在较高层捕获到语义信息。ELMo 的框架如下所示：
 
-<img src="NLP.assets/image-20210624153831601.png" alt="image-20210624153831601" style="zoom:50%;" />
+<img src="../assets/image-20210624153831601.png" alt="image-20210624153831601" style="zoom:50%;" />
 
 1. ELMo 由两个 LSTM encoder 组成，每个 encoder 都有多层，这两个 encoder 的任务就是预测下一个词。左边的 encoder 是一个正向预测模型，输入前一个词，预测后一个词。比如有序列"潮水 退了 就 知道 誰 沒穿 褲子"，当我们输入开始符"\<BOS\>"，这个正向预测模型就需要预测下一个词"潮水"，给出"潮水"，就预测"退了"，将预测的词与 label 相比较就可以得出它的 loss。右边的 encoder 是一个反向预测模型，输入后一个词，预测前一个词。比如给出"知道"，这个反向预测模型就需要预测前一个词"就"，给出"就"，就预测"退了"，将预测的词与 label 相比较就可以得出它的 loss。两种模型计算出来的 loss 相加就是 ELMo 最终需要优化的目标。
 
-   <img src="NLP.assets/image-20210624155805150.png" alt="image-20210624155805150" style="zoom:50%;" />
+   <img src="../assets/image-20210624155805150.png" alt="image-20210624155805150" style="zoom:50%;" />
 
 2. 对于正向预测的 encoder 来说，当输入一个词 w 去预测下一个词时，词 w 首先会通过 word2vec 的方式（查表）获得它的词向量，将这个词向量输入到多层的 Rnn 中进行预测，最后一层的 hidden state (即输出) 就会被拿去计算所有词的概率分布，并认为其中概率最高的词为预测的结果，然后将其与 label 做交叉熵运算得出 loss。在这个过程中，每一层 Rnn 的 hidden state (即输出) 都会作为输入词 w 的词向量。接着，我们就可以进行下一时间步 (继承上一时间步的状态) 的预测，即输入序列中词 w 的下一个词，预测词 w 的下下个词，反复上述过程直到输入序列的最后一个词 (由于序列存在 padding，因此需要 mask 矩阵来明确哪一个词才是最后一个词)。上述过程对于反向预测的 encoder 来说是完全相同的，区别仅仅在于输入的序列是反过来的。
 
 3. 由第二点可知，假设 encoder 有 n 层 Rnn，经过训练后，对于输入序列中的每一个词，它就具有 2n+1 个词向量，包括正向 encoder 的 n 个 Rnn 层 的 hidden state、反向 encoder 的 n 个 Rnn 层 的 hidden state 和作为原始输入的通过查表得到的 embedding。但通常情况下，正向 encoder 和 反向 encoder 中同一层 Rnn 的 hidden state 会通过简单拼接的方式合并成一个。所以到最后，对于每一个词，我们都可以得到它的 n+1 个词向量。
 
-   <img src="NLP.assets/elmo_word_emb.png" alt="ELMo how combine context info" style="zoom:67%;" />
+   <img src="../assets/elmo_word_emb.png" alt="ELMo how combine context info" style="zoom:67%;" />
 
    >n+1 个词向量包含了以下信息：
    >
@@ -395,11 +395,11 @@ ELMo 是一个深度上下文相关的词嵌入言模型，使用了多层双向
    >
    >③ 当前词的词向量信息。
 
-   <img src="NLP.assets/output_YyJc8E.gif" alt="ELMo structure" style="zoom:67%;" />
+   <img src="../assets/output_YyJc8E.gif" alt="ELMo structure" style="zoom:67%;" />
 
 4. 通过训练 ELMo 模型后，我们就可以得到一个可以获得各个词的 2n+1 个词向量的预训练模型。这个预训练模型没有任何实际应用，需要将其接入到其他模型 model 中来进行下游任务。但训练好的 ELMo 模型可以为每个词提供多达 n+1 个的词向量 $vec_i$，那么要如何在 model 中使用它们呢？通常的做法是通过 weighted sum 的方式将它们合并成一个词向量 $vec_{final}$，即为每个词向量创建一个权重矩阵 $a_i$，然后进行运算 $vec_{final}=a_1vec_1+a_2vec_2+...+a_{n+1}vec_{n+1}$。得到合并向量 $vec_{final}$ 后，就可以将其作为对应词的特征输入到 model 中进行下游任务。注意，权重矩阵 $a_i$ 是作为下游任务的 model 的模型参数，与 model 的其他模型参数一起被学习的，权重矩阵 $a_i$ 并不是 ELMo 模型的一部分。
 
-   <img src="NLP.assets/image-20210624184056374.png" alt="image-20210624184056374" style="zoom:40%;" />
+   <img src="../assets/image-20210624184056374.png" alt="image-20210624184056374" style="zoom:40%;" />
 
 ## GPT
 
@@ -416,11 +416,11 @@ Generative Pre-Training (GPT) 是一种单向（仅从前往后进行预测）�
 
 1. GPT 是一种单向（仅从前往后进行预测）语言模型，因此它的任务也就是输入一个句子中的上一个词，预测句子中的下一个词。GPT 也是一种自回归（auto-regression）模型，即前面输出的词所形成的序列会变成下一步预测的输入。
 
-   ![img](NLP.assets/v2-d909e1d04bd94fba1975120f1f041815_b.webp)
+   ![img](../assets/v2-d909e1d04bd94fba1975120f1f041815_b.webp)
 
 2. GPT 是 Transformer 的一种变种，即 GPT 是使用了 sequence mask （当然也有 padding mask）的 self attention 模型，它可以看成是 Transformer 中的 Encoder 加上了 sequence mask（因为是用前文信息去预测后文，因此不能让其看到未来的信息，所以要用 sequence mask），或者就是 Transformer 中 Decoder 的 self attention 层。
 
-   <img src="NLP.assets/v2-8649a1552b21ee3c283c2952649ec64b_r.jpg" alt="preview" style="zoom:50%;" />
+   <img src="../assets/v2-8649a1552b21ee3c283c2952649ec64b_r.jpg" alt="preview" style="zoom:50%;" />
 
 3. GPT 的训练结果中会出现"前面的预测比较不准确，而后面得预测比较准确"的现象：因为刚开始时前文信息量比较少，因此预测起来不是很准确，但当前文信息量多了以后，预测起来就会比较准确了。这种现象在 ELMo 中也会出现，其原因相同。
 
@@ -430,11 +430,11 @@ Generative Pre-Training (GPT) 是一种单向（仅从前往后进行预测）�
 
 1. 一开始将开始符"\<BOS\>"作为输入，经过 word embedding 和 positional encoding 后，得到"\<BOS\>"的词向量，将这个词向量与三个共享 matrix （共享是指同一层 attention layer 中，每个词都是用相同的三个矩阵来得到自己的 Q,K,V）相乘，得到它的 Query、Key 和 Value 三个向量。由于这是第一个词，所以它没有前文，它只能和自己做 attention 的计算，得到关于自己的关注度向量，将其作为词"\<BOS\>"在第一层 attention layer 的结果（GPT 和 transformer 一样采用多层 attention layer，而且在一般情况下，attention layer 还会包括前馈网络，作用是用非线性变换将 attention 计算的结果转换一下，增强结果的非线性能力），然后将这个结果输入到第二层。在第二层中，会将第一层输出的 attention 向量继续乘上三个共享的 matrix，得到它在第二层的 Query、Key 和 Value 三个向量，然后做与第一层一样的 attention 计算，将计算得到的 attention 向量作为第二层的结果，以此类推，直到最后一层输出一个经过层层嵌套后的最终的 attention 向量。这个最终的 attention 向量会乘上一个矩阵，得到一个关于词汇表中每一个词的概率分布，取其中概率最大的词作为预测的结果。至此，第一个词的预测过程结束。
 
-   <img src="NLP.assets/image-20210626173450324.png" alt="image-20210626173450324" style="zoom:50%;" />
+   <img src="../assets/image-20210626173450324.png" alt="image-20210626173450324" style="zoom:50%;" />
 
 2. 假设开始符"\<BOS\>"预测得到的词为"潮水"，则 GPT 会将"潮水"这个词作为第二次预测的输入（上一个词预测的结果作为下一次预测的输入）。同样地，"潮水"这个词首先会经过 word embedding 和 positional encoding，得到"潮水"的词向量，将这个词向量与三个共享 matrix 相乘，得到它的 Query、Key 和 Value 三个向量。由于有一个前文单词"\<BOS\>"，因此它需要和"\<BOS\>"以及自己做 attention 的计算（GPT 会保存前文每一个词在预测时每一层产生的 Q,K,V，以便与后续的词进行 attention 的计算），经过计算就可以得到关于"\<BOS\>"和自己的关注度向量，将他们相加即可得到"潮水"这个词在第一层的 attention 向量。与第一个词预测的过程一样，也需要经过多层 attention layer 的计算，得到最终的 attention 向量，将其乘上一个矩阵，得到一个关于词汇表中每一个词的概率分布，取其中概率最大的词作为预测的结果。至此，第二个词的预测过程结束。
 
-   <img src="NLP.assets/image-20210626174749683.png" alt="image-20210626174749683" style="zoom:50%;" />
+   <img src="../assets/image-20210626174749683.png" alt="image-20210626174749683" style="zoom:50%;" />
 
 3. 后续每个词的预测过程均和上述一样，直到最后预测的长度等于序列的最大长度或者遇到一个预测的词为结束符，这时就会结束整个预测的过程。
 
@@ -468,25 +468,25 @@ BERT 模型的内部结构就是 Transformer 的 Encoder，即多层的 self-att
 
 > 我们可以将 BERT 模型的内部结构比作身体，而附加任务比作头，为了完成任务，我们只需要将"身体"接入"头"即可，如果要完成多个任务，就将"身体"同时接入这些任务的"头"就行了。
 
-![image-20210627155520653](NLP.assets/image-20210627155520653.png)
+![image-20210627155520653](../assets/image-20210627155520653.png)
 
 ### Masked Language Model
 
 因为 BERT 的内部结构（如下所示）完全和 Transformer 的 Encoder 一样，因此不再展示其内部结构，用一个黑匣子来代替。
 
-![img](NLP.assets/bert-output-vector.png)
+![img](../assets/bert-output-vector.png)
 
 MLM 可以理解为完形填空，BERT 会随机 mask 句子中 15% 的词（其实就是用特殊的符号 "[MASK]" 去替换掉这 15% 的词），然后根据这些被 mask 掉的词的上下文来预测这些词。例如 my dog is hairy → my dog is [MASK]，此处将 hairy 进行了 mask 处理，那么我们就要采用非监督学习的方法根据 "my dog is" 来预测 hairy 这个词。具体的方法（如下图所示）就是，将那些被 mask 掉的词的位置所输出的词向量分别用 (全连接层 + softmax) 的方式进行处理，得到关于词汇表中每个词的概率分布，取其中概率最大的那个词作为相应位置的词向量所预测的词，即一个被 mask 掉的位置输出一个词，该词就作为该 mask 掉的词的预测。
 
 > mask 掉部分词做预测的原因：BERT 在预测时具有信息的穿越，它可以看到所要预测的信息在原句中的位置，因此会把原句的信息直接映射到输出，这样就没有办法很好的学习。比如在预测词 X 时，BERT 实际上是看着 X 来预测 X 的，这样并没有什么意义。所以 BERT 使用了一个 trick，即当 BERT 预测词 X 时，将原句中的 X 给遮住，不让模型看到 X，然后用前后文的信息来预测 X。这个 trick 就像完形填空：把句子的某些地方挖空，让模型来填充。
 
-<img src="NLP.assets/BERT-language-modeling-masked-lm.png" alt="img" style="zoom:50%;" />
+<img src="../assets/BERT-language-modeling-masked-lm.png" alt="img" style="zoom:50%;" />
 
 但是该方法有一个问题，对于句子中被 mask 掉的词，在没有被填入新的词的时候，它应该表示的是无或没有的意思，但模型不理解，它会认为这个地方就是一个叫做 "[MASK]" 的词，然后要根据这个词来预测另一个词。为了解决这个问题，BERT 做了这样的处理：在整个训练过程中，① 80% 的时间是采用 [mask] ，即 my dog is hairy → my dog is [MASK]；② 10% 的时间是随机取一个词来代替 mask 的词，即 my dog is hairy -> my dog is apple；③ 10% 的时间保持不变，即 my dog is hairy -> my dog is hairy。
 
 > 也可以这样理解，每回合训练取 15% 的词进行处理，其中在这 15% 的词当中，取 80% 进行 mask，取 10% 进行替换，取 10% 保持不变。
 
-<img src="NLP.assets/bert_mask_replace.png" alt="masked training" style="zoom:67%;" />
+<img src="../assets/bert_mask_replace.png" alt="masked training" style="zoom:67%;" />
 
 该策略令到 BERT 不再只对 [MASK] 敏感，而是对所有的 token 都敏感，以致能抽取出任何 token 的表征信息。
 
@@ -498,7 +498,7 @@ MLM 可以理解为完形填空，BERT 会随机 mask 句子中 15% 的词（其
 >
 >    如果两个词填在同一个地方没有违和感，那么这两个词就会有类似的 embedding。
 
-<img src="NLP.assets/image-20210627195834879.png" alt="image-20210627195834879" style="zoom:50%;" />
+<img src="../assets/image-20210627195834879.png" alt="image-20210627195834879" style="zoom:50%;" />
 
 ### Next Sentence Prediction
 
@@ -506,9 +506,9 @@ NSP 就是给出两个句子，然后判断这两个句子之间是否具有关�
 
 > "[CLS]" 应该放在哪里？如果 BERT 的内部架构为 RNN，那么 "[CLS]" 应该放在序列的末端，因为要等模型看过整个序列后，模型才有能力对 "两个句子之间是否具有关联性" 进行判断。但现在 BERT 的内部架构不是一个 RNN，而是 self-attention（序列中任意两个词不会因为距离改变而变化），所以 "[CLS]" 放在序列中的任何位置都可以，但一般放在句首比较方便。
 
-<img src="NLP.assets/bert-next-sentence-prediction.png" alt="img" style="zoom:50%;" />
+<img src="../assets/bert-next-sentence-prediction.png" alt="img" style="zoom:50%;" />
 
-<img src="NLP.assets/image-20210627194519790.png" alt="image-20210627194519790" style="zoom:50%;" />
+<img src="../assets/image-20210627194519790.png" alt="image-20210627194519790" style="zoom:50%;" />
 
 ### BERT 的 loss
 
@@ -530,7 +530,7 @@ Label2 = NotNext
 
 BEERT 的输入是 word embedding、segment embedding 和 position embedding 的相加，具体的操作如下图所示。
 
-![image-20210627202113011](NLP.assets/image-20210627202113011.png)
+![image-20210627202113011](../assets/image-20210627202113011.png)
 
  ### Fine-tuning BERT
 
@@ -540,25 +540,25 @@ BERT 模型被预训练出来后，就可以把其中的内部架构拿出来做
 
 输入一个句子，输出该句子的所属的类别。同样需要引入一个分类符号 "[CLS]" 到序列开头，表明这是做分类任务的，同时这个分类符号由 BERT 输出的 embedding 用于输入到任务模型中进行处理，然后输出一个类别作为预测的结果。
 
-<img src="NLP.assets/image-20210627204205654.png" alt="image-20210627204205654" style="zoom:50%;" />
+<img src="../assets/image-20210627204205654.png" alt="image-20210627204205654" style="zoom:50%;" />
 
 #### slot fitting
 
 输入一个句子，输出该句子中每个词所属的类别。
 
-<img src="NLP.assets/image-20210627212054009.png" alt="image-20210627212054009" style="zoom: 50%;" />
+<img src="../assets/image-20210627212054009.png" alt="image-20210627212054009" style="zoom: 50%;" />
 
 #### 文本推论
 
 输入两个句子（前提、假设），输出一个类别（错、对、无法判断），该类别表示根据假设，这个前提是错的、对的，还是无法判断。
 
-<img src="NLP.assets/image-20210627212938014.png" alt="image-20210627212938014" style="zoom:50%;" />
+<img src="../assets/image-20210627212938014.png" alt="image-20210627212938014" style="zoom:50%;" />
 
 #### 阅读理解
 
 输入两个句子（文章、问题），输出这个问题的答案。其中，答案必定在文章中出现，因此，模型返回的答案其实是答案在文章中的两个整数索引，即答案开始索引和答案结束索引。
 
-<img src="NLP.assets/image-20210627213343967.png" alt="image-20210627213343967" style="zoom:50%;" />
+<img src="../assets/image-20210627213343967.png" alt="image-20210627213343967" style="zoom:50%;" />
 
 模型工作原理：
 
@@ -567,7 +567,7 @@ BERT 模型被预训练出来后，就可以把其中的内部架构拿出来做
 3. （左图）将 $vec_s$ 与文章中每个词的 embedding（由 BERT 输出的）做矩阵相乘，然后用 softmax 进行处理，得到一个关于文章中每个词的概率分布，取其中概率最高的那个词在文章中的索引作为答案的开始索引；（右图）$vec_e$ 同理，可以得到一个答案的结束索引；
 4. 如果结果是结束索引小于开始索引，则这种情况的输出就是 "此题无解"。
 
-<img src="NLP.assets/image-20210627213334823.png" alt="image-20210627213334823" style="zoom: 33%;" /><img src="NLP.assets/image-20210627214437383.png" alt="image-20210627214437383" style="zoom:33%;" />
+<img src="../assets/image-20210627213334823.png" alt="image-20210627213334823" style="zoom: 33%;" /><img src="../assets/image-20210627214437383.png" alt="image-20210627214437383" style="zoom:33%;" />
 
 在上述中的两个向量 $vec_s$ 和 $vec_e$ 属于任务模型的参数，是从头开始学习的。
 
@@ -575,7 +575,7 @@ BERT 模型被预训练出来后，就可以把其中的内部架构拿出来做
 
 BERT 训练处理的词向量有很多层，也就是说，BERT 中每一层 attention layer 输出的 embedding 都可以作为对应词的词向量，面对这么多的词向量，我们应该取哪一层或哪些层的 embedding 进行使用呢？实际上，BERT 每一层训练出来的 embedding 都有不同的含义，我们可以根据任务的类型取合适含义的那一层或哪些层的 embedding 进行使用。如下图所示：
 
-<img src="NLP.assets/image-20210627215554514.png" alt="image-20210627215554514" style="zoom:50%;" />
+<img src="../assets/image-20210627215554514.png" alt="image-20210627215554514" style="zoom:50%;" />
 
 其中，左图表示的是 BERT 每一层 embedding 的含义，右图表示的是一些任务需要 BERT 的哪些层的 embedding 来完成。
 
@@ -583,7 +583,7 @@ BERT 训练处理的词向量有很多层，也就是说，BERT 中每一层 att
 
 1. ERNIE 是 BERT 的专门设计于汉字的版本。
 
-   <img src="NLP.assets/image-20210627214857091.png" alt="image-20210627214857091" style="zoom:50%;" />
+   <img src="../assets/image-20210627214857091.png" alt="image-20210627214857091" style="zoom:50%;" />
 
 2. Multilingual BERT 是在 104 种语言上训练出来的 BERT 模型，具体参考文章 [Beto, Bentz, Becas: The Surprising Cross-Lingual Effectiveness of BERT](https://arxiv.org/abs/1904.09077)。
 
@@ -591,15 +591,15 @@ BERT 训练处理的词向量有很多层，也就是说，BERT 中每一层 att
 
 BERT 训练了 10000 步还收敛不到一个好结果，而 GPT 只需要 5000 步就能收敛得比较好了。这是为什么呢？ 最主要的原因是 BERT 每次的训练太没有效率了，每次输入全部训练数据，但是只能预测 15% 的词，而 GPT 能够预测 100% 的词，因此 BERT 的訓練會比 GPT 慢很多（如下图所示）。
 
-<img src="NLP.assets/bert_gpt_mask_diff.png" alt="GPT bert mask" style="zoom: 67%;" />
+<img src="../assets/bert_gpt_mask_diff.png" alt="GPT bert mask" style="zoom: 67%;" />
 
 1. 莫烦提出的方法：在每回合训练中，当计算 attention 时固定 mask 掉对角线的 token，而不是在训练前随机 mask 掉序列中的 15% token。每行计算出来的 attention 就用于预测该行被 mask 掉的那一个词。这个方法表面上看，在预测某个 token 时所计算出来的 attention 不会携带被 mask 掉的那个 token 的信息（如果携带了被 mask 掉的词的信息，就相当于是看着正确结果进行预测了，这样进行训练就没有任何意义了），但实际上，每次计算完 attention 后还会用残差进行处理（即将计算出来的 attention 矩阵加上原始输入的词向量矩阵），这样第一行的 attention 就会加入关于 "我" 这个词的词向量，从而使 attention 被迫引入了被 mask 掉的那个词 "我" 的信息，其他行的 attention 都是一样的。因此，这个方法不太行。
 
-   <img src="NLP.assets/bert_identical_mask.png" alt="identical mask" style="zoom:67%;" />
+   <img src="../assets/bert_identical_mask.png" alt="identical mask" style="zoom:67%;" />
 
 2. 莫烦提出的改进：为了解决由于残差导致的信息泄露，莫烦将 mask 的位置进行了偏移（如下图所示），这样即使通过残差处理后，由于第一行 attention 加入的是 "我" 这个词的信息，不会引入关于 "爱" 这个实际上被 mask 掉的词的信息，因此就不会出现预测信息的泄露了。实际上，这个偏移后的位置也可以在其他地方，只有不是在对角线就行了。
 
-   <img src="NLP.assets/bert_X_plus_1_mask.png" alt="x+1 mask" style="zoom: 50%;" /><img src="NLP.assets/bert_X_minus_1_mask.png" alt="x-1 mask" style="zoom: 50%;" />
+   <img src="../assets/bert_X_plus_1_mask.png" alt="x+1 mask" style="zoom: 50%;" /><img src="../assets/bert_X_minus_1_mask.png" alt="x-1 mask" style="zoom: 50%;" />
 
 3. 还有一个问题：虽然上面看似解决了信息泄露的问题，但仔细一看，信息泄露还是存在的。因为 BERT 模型包含多层 attention layer，第一层 attention layer 所计算出来的 attention 确实不会包含被 mask 掉的那个词的信息，但到了第二层及第二层以上后，由于第一层所计算出来的 attention 混杂了被 mask 掉的那些词的信息，比如（左图）最后一行就包含了所有被 mask 掉的词的信息，第一行也有其他行中被 mask 掉的词的信息，因此在进行第二层及第二层以上的 attention 时，这些信息都会被混入到所有被计算出来的 attention 当中，所以到最后还是会出现预测信息泄露的情况。
 

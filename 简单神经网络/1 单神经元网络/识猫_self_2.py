@@ -135,7 +135,7 @@ model = model(train_set_x, train_set_y, test_set_x, test_set_y)
 
 
 # 使用model预测实际图片
-my_image_url = 'images/test1.jpg'
+my_image_url = 'images/test.jpg'
 my_image_data = np.array(plt.imread(my_image_url))
 
 my_image = tf.resize(my_image_data, (64, 64),

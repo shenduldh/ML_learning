@@ -13,7 +13,7 @@
 3. 更新聚类中心：将属于类别$c_i$中所有数据的平均值作为新的$c_i$；
 4. 重复分类和更新：依据新的聚类中心对N个数据重新进行分类，然后继续更新聚类中心，重复这两个步骤，直到所有数据与其所关联的聚类中心之间的距离之和最小。
 
-<img src="无监督学习.assets/image-20210629154810263.png" alt="image-20210629154810263" style="zoom: 80%;" />
+<img src="../assets/image-20210629154810263.png" alt="image-20210629154810263" style="zoom: 80%;" />
 
 ## KNN
 
@@ -26,11 +26,11 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 图中绿色的点就是我们要预测的那个点。假设 K = 3，那么 KNN 算法就会找到与它距离最近的三个点（这里用圆圈把它圈起来了），看看哪种类别多一些，比如这个例子中是蓝色三角形多一些，因此新来的绿色点就归类到蓝三角了。
 
-<img src="无监督学习.assets/1011838-20190125174428395-6404591.png" alt="KNN原理1" style="zoom: 67%;" />
+<img src="../assets/1011838-20190125174428395-6404591.png" alt="KNN原理1" style="zoom: 67%;" />
 
 但是当 K = 5 的时候，判定就变成不一样了，这次变成红色的圆多一些，所以新来的绿点被归类成红圆。从这个例子中，我们就能看得出 K 的取值是很重要的。此外，如何选择点距离的计算方法也是影响 KNN 算法判定的一个重要因素。
 
-<img src="无监督学习.assets/1011838-20190125174434360-1539590461.png" alt="KNN原理2" style="zoom: 67%;" />
+<img src="../assets/1011838-20190125174434360-1539590461.png" alt="KNN原理2" style="zoom: 67%;" />
 
 ## Hierarchical Agglomerative Clustering
 
@@ -46,7 +46,7 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 2. 挑选一个分类基准：如下图所示，在已创建好的树中切一刀，如果这一刀是红色这条线，则它会把原始的5个数据分成两类（如红色框所示）；如果这一刀是蓝色这条线，则它会把原始的5个数据分成三类（如蓝色框所示）；如果这一刀是绿色这条线，则它会把原始的5个数据分成四类（如绿色框所示）。
 
-<img src="无监督学习.assets/image-20210629160354751.png" alt="image-20210629160354751" style="zoom:67%;" />
+<img src="../assets/image-20210629160354751.png" alt="image-20210629160354751" style="zoom:67%;" />
 
 # Dimension Reduction
 
@@ -54,7 +54,7 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 对于某个物品，如果一定要把它分为某一类，则这个就叫 Cluster；但通常情况下某个物品可以是属于多个方面的，它不一定只能属于某一类，因此这时候我们就可以用 Distributed Representation 来表示它。
 
-<img src="无监督学习.assets/image-20210629162647437.png" alt="image-20210629162647437" style="zoom:67%;" />
+<img src="../assets/image-20210629162647437.png" alt="image-20210629162647437" style="zoom:67%;" />
 
 有时候， Distributed Representation 的维度会非常大，这时候我们就需要用 Dimension Reduction 来对其进行降维。高维数据 data 可以被降维的原因：data 在其空间中仅仅占了一小部分，也就是说，在这个高维空间中，只有一小部分的地方是属于 data 的，其他地方都没有被使用，完全浪费了。因此，完全没有必要用高维的空间去表示 data，我们只需要用低维空间就可以表示 data 了，低维空间的数据量已经完全可以包裹住 data 了。
 
@@ -64,7 +64,7 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 将 data 的分布拿出来看一下（比如下面的二维分布），你会发现数据都集中在轴x2上，也就是说，x1这个轴完全没有用，因此把它拿掉就可以了，这就完成了 dimension reduction 这件事了。但通常情况下，特征选择没有什么用，因为大部分情况是任何维度都不能拿掉。
 
-<img src="无监督学习.assets/image-20210629172013023.png" alt="image-20210629172013023" style="zoom:67%;" />
+<img src="../assets/image-20210629172013023.png" alt="image-20210629172013023" style="zoom:67%;" />
 
 ## 主成分分析
 
@@ -77,19 +77,19 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 降维就是找到一个 function，给这个 function 输入高维数据 x，它就能吐出维度低于 x 的数据 z。
 
-<img src="无监督学习.assets/image-20210629172901364.png" alt="image-20210629172901364" style="zoom:67%;" />
+<img src="../assets/image-20210629172901364.png" alt="image-20210629172901364" style="zoom:67%;" />
 
 假设这个 function 是一个 linear function，则可以表示为 z=Wx，因此找 function 就变成了找到一个矩阵 W，这个矩阵 W 与高维数据 x 相乘的结果就是 x 被降维后的数据 z。
 
-<img src="无监督学习.assets/image-20210629213105007.png" alt="image-20210629213105007" style="zoom:67%;" />
+<img src="../assets/image-20210629213105007.png" alt="image-20210629213105007" style="zoom:67%;" />
 
 假设数据 x 是一个 n 维列向量，我们要将其转化为维度更低的 m 维列向量 z，则 W 就是一个 m×n 的矩阵（称为投影矩阵），其中 W 的每一行 $w^i$ （称为投影向量）就可以把 x 映射到 z 中的每一维。换句话说，z 中每一个元素其实就是 x 在 W 每一行向量上的投影，比如 z 的第一个元素 z1 就是 x 在 w1 上的投影。
 
-<img src="无监督学习.assets/image-20210629213047840.png" alt="image-20210629213047840" style="zoom:50%;" />
+<img src="../assets/image-20210629213047840.png" alt="image-20210629213047840" style="zoom:50%;" />
 
 举个例子，假设 x 是一个二维数据（如下图所示。其中，每个点代表一个数据，每个数据表示一个宝可梦，横轴表示它的攻击力，纵轴表示它的防御力），我们要将它降维成一维数据 z，那么 W 就是只有一行的二维行向量。W 在图中可以表示为某一个方向上的线（如图中所示的两条线），那么 z 就是各个数据 x 在这条线上的投影。进一步扩展，假设 x 是一个三维数据，我们把它降为二维数据 z，则 W 就是包含两行的矩阵，每一行都可以表示为一条线，因此 z 中的两个元素分别就是 x 在 W 的两条线上的投影（或者说，整个 z 就是 x 在由 W 的两条线所形成的平面上的投影）。
 
-<img src="无监督学习.assets/image-20210629213447292.png" alt="image-20210629213447292" style="zoom: 63%;" />
+<img src="../assets/image-20210629213447292.png" alt="image-20210629213447292" style="zoom: 63%;" />
 
 ### PCA 如何投影
 
@@ -97,7 +97,7 @@ KNN 的原理就是当预测一个新的值 x 的时候，根据它距离最近�
 
 1. 投影在 $w^i$ 上的数据要有尽量大的分布（尽量分散开来），即投影后的数据之间的方差尽量大。换句话说，高维数据在投影到 $w^i$ 后还要尽量可以分辨出它们之间的差异。如下图所示，数据投影在红色线上比投影在橙色线上要有更大的分布，因此选择红色线作为投影线更为合适；
 
-   <img src="无监督学习.assets/image-20210629213358352.png" alt="image-20210629213358352" style="zoom:58%;" />
+   <img src="../assets/image-20210629213358352.png" alt="image-20210629213358352" style="zoom:58%;" />
 
 2. 投影向量 $w^i$ 的长度（模）必须为1，即 $\|w^i\|_2=1$；
 
@@ -124,11 +124,11 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 ② 化简 $Var(z_{1})$ 为 $(w^1)^TCov(x)w^1$，其中 $Cov(x)$ 为输入的高维数据的协方差矩阵（这个矩阵是对称和半正定的，因此它的特征值都是非负的，且不同特征值的特征向量正交）。化简过程如下：
 
-<img src="无监督学习.assets/image-20210629224051896.png" alt="image-20210629224051896" style="zoom:67%;" />
+<img src="../assets/image-20210629224051896.png" alt="image-20210629224051896" style="zoom:67%;" />
 
 ③ 化简后，PCA 的条件变为最大化 $(w^1)^TCov(x)w^1$ 和 $\|w^1\|_2=(w^1)^Tw^1=1$，运用拉格朗日乘子法进行求解：
 
-<img src="无监督学习.assets/image-20210629224823993.png" alt="image-20210629224823993" style="zoom: 55%;" />
+<img src="../assets/image-20210629224823993.png" alt="image-20210629224823993" style="zoom: 55%;" />
 
 ④ 由拉格朗日乘子法可得 $Sw^1=αw^1$，可知系数 α 是 S 的特征值，$w^1$是 S 的特征值 α 对应得特征向量。将结果 $Sw^1=αw^1$ 代入 $(w^1)^TSw^1$ 可得 $(w^1)^TSw^1=α$，因此条件变为最大化 α。因此可以解得，α 就是 S 的最大特征值，$w^1$ 就是这个最大特征值对应的特征向量。
 
@@ -136,7 +136,7 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 对于 $w^2$，PCA 要求它能使投影后的 $z_2$ 具有尽量大的方差 $Var(z_{2})=\frac{1}{N}\sum_{z_{2}}(z_{2}-\bar{z_{2}})^{2}$，且 $\|w^2\|_2=1$，以及 $w^2$ 和 $w^1$ 正交。因此，可以通过与上述相同的计算（只不过是增加了一个正交的条件），过程如下所示：
 
-<img src="无监督学习.assets/image-20210629225623911.png" alt="image-20210629225623911" style="zoom: 50%;" />
+<img src="../assets/image-20210629225623911.png" alt="image-20210629225623911" style="zoom: 50%;" />
 
 可以解得：$w^2$ 就是输入数据 x 的协方差矩阵的第二大特征值对应的特征向量。
 
@@ -150,29 +150,29 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 当我们把这样处理后的数据 z 再丢给其他的 model 时，其它的 model 就可以直接假设现在的 input data 的 dimension 之间没有 decorrelation，它们就不需要再对 input data 进行规范化等数据处理的过程，从而减少了 model 的参数量。同时，由于数据已经规范化，model 也可以用比较简单的 model，因此也可以避免 overfitting 的情形。
 
-<img src="无监督学习.assets/image-20210629230648356.png" alt="image-20210629230648356" style="zoom:50%;" />
+<img src="../assets/image-20210629230648356.png" alt="image-20210629230648356" style="zoom:50%;" />
 
 ### 从 SVD 角度看 PCA
 
 假设有如图所示的 component（用符号 $u_i$ 表示），其他任何数字图片 x 都可以看成是由这些 component 组成（component 的数量远比图片 x 的像素点要小），用表达式表示就是 $x≈c_1u^1+c_2u^2+...+c_ku^k+\bar x$，每个 component 前面的系数 $c_i$ 就可以用来代替原始像素来表示图片。比如数字 "7" 这个图片可以由 u1、u3 和 u5 组成，那么我们就可以用向量 [1,0,1,0,1,...] （向量中值为1的元素表示了图片由哪些 component 组成）来代替原始像素来表示数字 "7" 这个图片。
 
-<img src="无监督学习.assets/image-20210630140226592.png" alt="image-20210630140226592" style="zoom: 50%;" />
+<img src="../assets/image-20210630140226592.png" alt="image-20210630140226592" style="zoom: 50%;" />
 
 那么如何定义这些 component 的标准呢？这个标准就是，我们希望由 component 组合而成的图片与原图片尽量相似，也就是它们之间的误差尽量小，这个标准可以用如下图所示的式子 L 表示。
 
-<img src="无监督学习.assets/image-20210630141339373.png" alt="image-20210630141339373" style="zoom:50%;" />
+<img src="../assets/image-20210630141339373.png" alt="image-20210630141339373" style="zoom:50%;" />
 
 那么如何根据这个标准找到这些 component 呢？我们一步一步来找。首先将数字图片 x 用 component 表示的表达式用矩阵进行表示（矩阵 X 是包含多个图片的原始像素数据，右边两个分别是 component 矩阵和 representation 矩阵）：
 
-<img src="无监督学习.assets/image-20210630142055507.png" alt="image-20210630142055507" style="zoom:50%;" />
+<img src="../assets/image-20210630142055507.png" alt="image-20210630142055507" style="zoom:50%;" />
 
 接着我们用 SVD 对矩阵 X 进行分解，得到矩阵 U、Σ 和 V，其中 U 就是上面的 component 矩阵，Σ 和 V 的相乘就是上面的 representation 矩阵：
 
-<img src="无监督学习.assets/image-20210630142533755.png" alt="image-20210630142533755" style="zoom:50%;" />
+<img src="../assets/image-20210630142533755.png" alt="image-20210630142533755" style="zoom:50%;" />
 
 由 SVD 分解可知，如果要想让表达式左右两边的差距最小，那么 U 的每一列就应该是矩阵 $XX^T$ （就是 X 的协方差矩阵）的前 k 个最大特征值对应的特征向量，即每一个 component 就是 X 的协方差矩阵的前几个最大特征值对应的特征向量。这个结论和 PCA 推导出来的结果是一致的，也就是说，由 PCA 得到的投影矩阵 W 就是这个 component 矩阵，W 的每一行投影向量就是其中的每一个 component。换句话说，通过 PCA 得到的投影矩阵 W 就是使得降维后的数据可以最大相似度地还原成原数据的解。
 
-<img src="无监督学习.assets/image-20210630143652690.png" alt="image-20210630143652690" style="zoom:50%;" />
+<img src="../assets/image-20210630143652690.png" alt="image-20210630143652690" style="zoom:50%;" />
 
 ### PCA 与 Autoencoder
 
@@ -189,13 +189,13 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 >
 > 其中，W 是正交矩阵，它的逆矩阵等于 $W^T$；符号 "·" 表示两个向量进行内积计算。
 
-<img src="无监督学习.assets/image-20210630152525907.png" alt="image-20210630152525907" style="zoom: 67%;" />
+<img src="../assets/image-20210630152525907.png" alt="image-20210630152525907" style="zoom: 67%;" />
 
 我们可以用仅有一个 hidden layer 的神经网络来描述上面的过程：
 
 假设输入数据为 3 维，降维到 K=2 维。其中每条线的权重都来自于投影矩阵的每个元素，hidden layer 的输出就是降维后的数据，整个网络的输出就是将降维数据还原后的数据，这个神经网络的优化目标就是要让整个网络的输入数据和输出数据尽量一致。
 
-<img src="无监督学习.assets/image-20210630211941264.png" alt="image-20210630211941264" style="zoom: 50%;" />
+<img src="../assets/image-20210630211941264.png" alt="image-20210630211941264" style="zoom: 50%;" />
 
 可以看出，这个神经网络已经是一个最佳的网络，因为由 PCA 求出来的投影参数就是最佳的参数，它可以使得优化目标达到最佳。由此可以引出一个问题：如果让这个网络随机初始化参数从头开始训练，这个网络最后训练出来的参数会和 PCA 计算出来的参数一样吗？答案是不一样的。因此，比起用神经网络进行训练，直接用 PCA 求取投影矩阵是更合适的。但使用神经网络来进行训练，它可以是 deep 的，它可以有很多个 hidden layer，这是 PCA 给不了的优势。
 
@@ -206,7 +206,7 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 1. PCA 是非监督的，因此如果给出的数据具有不同的类别，则 PCA 可能会把它们都挤压在一起，从而无法很好的分辨。比如下图左边所示，橙色和蓝色是两种 label，如果使用 PCA，则它会把这两种数据都挤压在一起，虽然这样做使得它们可以有很大的分布；
 2. PCA 是线性的，因此如果给出像右上角这样的数据，PCA 的做法是直接压扁它们，使得各类数据之间相互参杂，而比 PCA 更好的做法其实是将它们进行拉平，这样各类数据之间就可以很好分辨，但这种做法属于 Non Linear Dimension Reduction。
 
-<img src="无监督学习.assets/image-20210630214401953.png" alt="image-20210630214401953" style="zoom:40%;" />
+<img src="../assets/image-20210630214401953.png" alt="image-20210630214401953" style="zoom:40%;" />
 
 ### 从应用实例看 PCA
 
@@ -216,15 +216,15 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 > λ 就是对应 component （即特征向量）所在的维度下的方差。
 
-<img src="无监督学习.assets/image-20210630232613818.png" alt="image-20210630232613818" style="zoom:50%;" />
+<img src="../assets/image-20210630232613818.png" alt="image-20210630232613818" style="zoom:50%;" />
 
 每个 component 对应的特征值的占比的计算结果如下所示，因此我们可以选择 4 个 component 进行压缩。
 
-<img src="无监督学习.assets/image-20210630232441542.png" alt="image-20210630232441542" style="zoom:50%;" />
+<img src="../assets/image-20210630232441542.png" alt="image-20210630232441542" style="zoom:50%;" />
 
 接下来，我们就可以通过 PCA 获得这四个 component 的结果：
 
-<img src="无监督学习.assets/image-20210630233222952.png" alt="image-20210630233222952" style="zoom:50%;" />
+<img src="../assets/image-20210630233222952.png" alt="image-20210630233222952" style="zoom:50%;" />
 
 可以看出，每个 component 都由原来的 6 个 feature 组合得到，不同的组合表示了这个 component 的不同含义，比如说 PC1 在每个 feature 上都有一定的占比，这就表示 PC1 是综合实力（强度）的意思；PC2 在防御力上占比大，而在速度上占比为负，这就表示 PC2 是用速度换取防御力的意思。
 
@@ -234,15 +234,15 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 假设 component 有 30 个，则这些 component 可以长得如下图所示那样。由这些 component 做 linear combination 就可以得到 0-9 这 10 个数字图片。
 
-<img src="无监督学习.assets/image-20210630234939237.png" alt="image-20210630234939237" style="zoom:40%;" />
+<img src="../assets/image-20210630234939237.png" alt="image-20210630234939237" style="zoom:40%;" />
 
 可以发现，这些 component 都不是一些比较 basic 的图形（比如一些简单的横、竖笔画等），而是比较复杂的图形。为什么会这样呢？这是因为在这些 component 的 linear combination 中，PCA 允许它们的系数可负可正的。也就是说，当我们用这些 component 组成一张图片的时候，既可以把这些 component 相加，也可以把这些 component 相减，这就导致用 PCA 找出来的 component 不需要是 basic component，因为我们完全可以通过用复杂的 component 减去一些其它一些 component 来得到 basic component。比如我们画一个 9，那我可以先画一个8，把下面的圈圈减掉，然后把一撇加上去。也就是说，你可以先画一个复杂的图，然后再把多余的减掉。
 
-<img src="无监督学习.assets/chapter24-25.png" alt="image" style="zoom:85%;" />
+<img src="../assets/chapter24-25.png" alt="image" style="zoom:85%;" />
 
 如果我们使得找出来的 component 是 basic，那我们就得用 NMF 这个技术。因为 NMF 要求所有 component 前面的 weight 都是正的，这就使得一张图片必须是由 component 叠加得到，因此这些 component 就必须是 basic（如下图所示）。此外， NMF 还要求所有 component 的 dimension 也必须是正的，这个是有好处的，因为由 PCA 找出来的 component 的 dimension 可以是负的，如果我们要把 component 画出来，那这些负值就需要进行额外的处理（比如把负值置 0 ，但这会使图片缺失信息，更常用的做法是将整体进行偏移），而 NMF 就不需要这些操作，因为它的 component 的 dimension 是正的。
 
-<img src="无监督学习.assets/chapter24-26.png" alt="image" style="zoom:80%;" />
+<img src="../assets/chapter24-26.png" alt="image" style="zoom:80%;" />
 
 ## 流形学习
 
@@ -254,7 +254,7 @@ Manifold Learning 要做的事情就是把 S 型的这块东西展开，把塞�
 
 一个形象的流形降维（摊平）过程如下图。我们有一块卷起来的布，我们希望将其展开到一个二维平面，并且在展开后的布能够在局部保持布结构的特征，这个展开的过程就像两个人将其拉开一样。
 
-![img](无监督学习.assets/1042406-20170109201731541-419567891.jpg)
+![img](../assets/1042406-20170109201731541-419567891.jpg)
 
 ## 局部线性嵌入
 
@@ -262,17 +262,17 @@ Manifold Learning 要做的事情就是把 S 型的这块东西展开，把塞�
 
 LLE 属于流形学习（Manifold Learning）的一种。基于流形的降维算法就是将流形从高维到低维的降维过程，在降维的过程中我们希望流形在高维的一些特征可以得到保留。对于 LLE 来说，它就是在降维时保持了样本在高维时的局部线性特征。
 
-<img src="无监督学习.assets/image-20210702151310638.png" alt="image-20210702151310638" style="zoom:67%;" />
+<img src="../assets/image-20210702151310638.png" alt="image-20210702151310638" style="zoom:67%;" />
 
 假设我们有一系列的点，每个点都是一个高维向量，我们的目的就是把这些点降维到低维空间中（把这些点变成低维向量）。现在我们用 Locally Linear Embedding（局部线性嵌入）来做：
 
 1. 计算局部权重：假设任意点 $x^i$，我们先通过一些算法（比如通过欧式距离度量来选择 k 个最近邻）来找到它的 k 个邻居点 $x^j$（k 是超参数），然后依照最小化特定式子的目标去计算（使用拉格朗日乘子法）这 k 个邻居点与点 $x^i$ 之间的权重 $w_{ij}$（即 weight ）。LLE 将这个式子定义为：要求这 k 个邻居点与 $w_{ij}$ 做 weighted sum 的结果与点 $x^i$ 尽量相同，具体的表达式如下图所示。
 
-   <img src="无监督学习.assets/image-20210701222454986.png" alt="image-20210701222454986" style="zoom: 50%;" />
+   <img src="../assets/image-20210701222454986.png" alt="image-20210701222454986" style="zoom: 50%;" />
 
 2. 根据局部权重计算低维表示：LLE 的核心思想就是将高维数据转换为低维数据后，需要保持降维前后数据点与周围 k 个邻居的 weight 不变（即降维前后局部关系不变）。也就是说，低维数据点 $z^i$ 在低维空间中与周围 k 个邻居的 weight 就是我们在步骤 1 中求出来的 weight，即我们已经有低维数据点 $z^i$ 在低维空间中与周围 k 个邻居的 weight 了，但我们不知道这 k 个邻居是什么，我们现在就需要根据这些 weight 去求出这 k 个邻居点。怎么求呢？同样地，LLE 要求这 k 个邻居点 $z^j$ 与 weight 做 weighted sum 的结果与低维数据点 $z^i$ 尽量相同，将这个要求转化为式子如下图所示。依照最小化这个式子我们就可以计算出（使用拉格朗日乘子法）高维数据 $x^i$ 被降维在低维空间中的表示 $z^i$。
 
-   <img src="无监督学习.assets/image-20210701231607432.png" alt="image-20210701231607432" style="zoom: 50%;" />
+   <img src="../assets/image-20210701231607432.png" alt="image-20210701231607432" style="zoom: 50%;" />
 
 总结一下流程：
 
@@ -284,7 +284,7 @@ LLE 属于流形学习（Manifold Learning）的一种。基于流形的降维�
 
 下面是选择不同数量的邻居时 LLE 的降维结果。只有 k 选取适当时，LLE 才能得到好的降维结果。k 太大时结果不太好的原因：k 太大时会考虑一些很远的点作为邻居，而我们选取这些点都是采用欧氏距离来做，而欧式距离仅在点之间距离很近时才有效，因此当 k 太大时，由于邻居点的选取范围变大，用欧式距离选取的邻居就可能并不是真正的邻居（比如测地距离很远的两个点，用欧式距离来算可能是很短的，它们就会被认为是邻居，但实际上并不是）。
 
-<img src="无监督学习.assets/image-20210702154135429.png" alt="image-20210702154135429" style="zoom:67%;" />
+<img src="../assets/image-20210702154135429.png" alt="image-20210702154135429" style="zoom:67%;" />
 
 ## 拉普拉斯特征映射
 
@@ -345,7 +345,7 @@ Laplacian Eigenmaps 是一种基于图的流形降维算法，其主要思想是
 
 LE 和 LLE 算法的缺陷：只假设了相邻的点要接近，却没有假设不相近的点要分开。因此这两个算法都可以让相同 class 的点聚集在一起，却没有办法避免不同 class 的点重叠在一起，这就会导致无法区分不同 class 的现象，如下图所示。而 T-SNE 算法就可以弥补上述的缺陷。
 
-<img src="无监督学习.assets/image-20210703213510957.png" alt="image-20210703213510957" style="zoom: 50%;" />
+<img src="../assets/image-20210703213510957.png" alt="image-20210703213510957" style="zoom: 50%;" />
 
 T-SNE 算法同样是用于降维，这里假设将高维数据 x 降维成低维数据 z：
 
@@ -356,7 +356,7 @@ T-SNE 算法同样是用于降维，这里假设将高维数据 x 降维成低�
    & =\sum_{i} \sum_{j} P\left(x^{j} \mid x^{i}\right) \log \frac{P\left(x^{j} \mid x^{i}\right)}{Q\left(z^{j} \mid z^{i}\right)}
    \end{aligned}$，这个式子表示每个原始数据 $x_i$ 的相似度分布与对应低维表示 $z _i$ 的相似度分布的 KL 散度的总和，描述地就是两个分布之间地差距，梯度下降的目标就是让这个差距越小越好。整个过程如下：① 首先随机初始化 z，然后分别在 x 和 z 所在的空间分布上计算它们的相似度分布（如步骤 1 和 2 所示）；② 将它们的相似度分布代入式子 L 中，得出两个分布之间的差距，然后根据这个差距对 z 做微分，最后拿着这个微分对 z 进行梯度更新。不断循环这个过程，直到差距变得足够小，这时候得到的 z 就是 x 在低维空间的表示。
 
-<img src="无监督学习.assets/image-20210703214020265.png" alt="image-20210703214020265" style="zoom:50%;" />
+<img src="../assets/image-20210703214020265.png" alt="image-20210703214020265" style="zoom:50%;" />
 
 > 要注意的地方：
 >
@@ -389,11 +389,11 @@ SNE 和 T-SNE 做法的区别可以用下图来解释。假设横轴代表了在
 
 这就是说，如果原始数据点之间的距离比较近，那么这个相近性在低维空间中会被 T-SNE 保留；如果原始数据点之间的距离比较远，那么 T-SNE 就会在低维空间中把这个距离强化，变得更远。
 
-<img src="无监督学习.assets/image-20210703223337934.png" alt="image-20210703223337934" style="zoom:50%;" />
+<img src="../assets/image-20210703223337934.png" alt="image-20210703223337934" style="zoom:50%;" />
 
 也就是说，T-SNE 可以让相同 class 的点在一起，也能让不同 class 的点被拉得很远，这个特点可以让 T-SNE 降维后的可视化效果非常好，这个效果（如下图所示）就是不同的 class 分别聚集在不同地方，而且这些地方之间都相距比较远。
 
-<img src="无监督学习.assets/image-20210703232424792.png" alt="image-20210703232424792" style="zoom:50%;" />
+<img src="../assets/image-20210703232424792.png" alt="image-20210703232424792" style="zoom:50%;" />
 
 ## AutoEncoder
 
@@ -406,27 +406,27 @@ AutoEncoder 本质上就是一个自我压缩和解压的过程，我们想要�
 
 注意到，Encoder 和 Decoder 都是 Unsupervised Learning，由于 code 是未知的，对 Encoder 来说，我们手中的数据只能提供图像作为 input，却不能提供 code 作为 output；对 Decoder 来说，我们只能提供图像作为 output，却不能提供 code 作为 input。因此，Encoder 和 Decoder 单独拿出来都无法进行训练，我们需要把它们连接起来，这样整个神经网络的输入和输出都是我们已有的图像数据，就可以同时对 Encoder 和 Decoder 进行训练，而降维后的编码结果就可以从最中间的那层 hidden layer 中获取。
 
-<img src="无监督学习.assets/image-20210704154410632.png" alt="image-20210704154410632" style="zoom:50%;" />
+<img src="../assets/image-20210704154410632.png" alt="image-20210704154410632" style="zoom:50%;" />
 
 实际上PCA用到的思想与之非常类似，PCA的过程本质上就是按组件拆分，再按组件重构的过程。在PCA中，我们先把均一化后的 x 根据组件分解到更低维度的 c，然后再将组件权重 c 乘上组件的反置 $W^T$ 得到重组后的 $\hat x$，同样我们期望重构后的 $\hat x$ 与原始的 x 越接近越好。
 
-<img src="无监督学习.assets/image-20210704155143855.png" alt="image-20210704155143855" style="zoom:50%;" />
+<img src="../assets/image-20210704155143855.png" alt="image-20210704155143855" style="zoom:50%;" />
 
 如果把这个过程看作是神经网络，那么原始的 x 就是 input layer，重构 $\hat x$ 就是 output layer，中间组件分解权重 c 就是 hidden layer，在 PCA 中它是 linear 的，我们通常又叫它瓶颈层 (Bottleneck layer)。由于经过组件分解降维后的 c，维数要远比输入输出层来得低，因此 hidden layer 实际上非常窄，因而有瓶颈层的称呼。对比于 AutoEncoder，从 input layer 到 hidden layer 的按组件分解实际上就是编码 (encode) 过程，从 hidden layer 到 output layer 按组件重构实际上就是解码 (decode) 的过程。
 
 这时候你可能会想，可不可以用更多层 hidden layer 呢？答案是肯定的。对 Deep AutoEncoder 来说，实际上就是通过多级编码降维，再经过多级解码还原的过程。此时：从 input layer 到 bottleneck layer 的部分都属于 Encoder；从 bottleneck layer 到 output layer 的部分都属于 Decoder；而 bottleneck layer 的 output 就是自编码结果。
 
-<img src="无监督学习.assets/image-20210704155642013.png" alt="image-20210704155642013" style="zoom:50%;" />
+<img src="../assets/image-20210704155642013.png" alt="image-20210704155642013" style="zoom:50%;" />
 
 注意到，如果按照PCA的思路，则 Encoder 的参数需要和 Decoder 的参数保持一致的对应关系，这可以通过给两者相同的初始值并设置同样的更新过程得到，这样做的好处是可以节省一半的参数，降低 overfitting 的概率。但这件事情并不是必要的，实际操作的时候，你完全可以对神经网络进行直接训练而不用保持编码器和解码器的参数一致。
 
 下图给出了分别采用 PCA 和 Deep AutoEncoder 对手写数字进行编码解码后的结果，从 784 维降到 30 维，可以看出，Deep AutoEncoder 的还原效果比 PCA 更好：
 
-<img src="无监督学习.assets/image-20210704160325813.png" alt="image-20210704160325813" style="zoom:50%;" />
+<img src="../assets/image-20210704160325813.png" alt="image-20210704160325813" style="zoom:50%;" />
 
 如果将原始数据降到二维平面做可视化，不同颜色代表不同的数字，可以看到：① 通过 PCA 降维得到的编码结果中，不同颜色代表的数字被混杂在一起；② 通过 Deep Auto-encoder 降维得到的编码结果中，不同颜色代表的数字被分散成一群一群的。
 
-<img src="无监督学习.assets/image-20210704160109790.png" alt="image-20210704160109790" style="zoom:50%;" />
+<img src="../assets/image-20210704160109790.png" alt="image-20210704160109790" style="zoom:50%;" />
 
 ### 文本检索
 
@@ -434,17 +434,17 @@ AutoEncoder 也可以被用在文字检索上，很简单的一个做法是Vecto
 
 实际上这个模型的好坏，就取决于从 document 转化而来的 vector 的好坏，它是否能够充分表达文章信息。最简单的 vector 表示方法是 Bag-of-word，该方法的 vector 维数等于所有词汇的总数，某一维等于 1 则表示对应词汇在这篇文章中出现，此外还可以根据词汇的重要性将其加权。但这个模型是非常脆弱的，对它来说每个词汇都是相互独立的，无法体现出词汇之间的语义 (semantic)。
 
-<img src="无监督学习.assets/image-20210704165606093.png" alt="image-20210704165606093" style="zoom:50%;" />
+<img src="../assets/image-20210704165606093.png" alt="image-20210704165606093" style="zoom:50%;" />
 
 虽然 Bag-of-word 不能直接用于表示文章，但我们可以把它作为 Auto-encoder 的 input，通过降维来抽取有效信息，以获取所需的 vector。同样为了可视化，这里将 Bag-of-word 降维到二维平面上，下图中每个点都代表一篇文章，不同颜色则代表不同的文章类型。如果用户做查询，就把查询的语句用相同的方式映射到该二维平面上，并找出属于同一类别的所有文章即可。下图右下角是用 LSA 算法做同样的事情的对比。
 
-<img src="无监督学习.assets/image-20210704170000558.png" alt="image-20210704170000558" style="zoom:50%;" />
+<img src="../assets/image-20210704170000558.png" alt="image-20210704170000558" style="zoom:50%;" />
 
 ### 图片检索
 
 AutoEncoder 同样可以被用在图像检索上。以图找图最简单的做法就是直接对输入的图片与数据库中的图片计算 pixel 的相似度，并挑出最像的图片，但这种方法的效果是不好的，因为单纯的 pixel 所能够表达的信息太少了。我们需要使用 AutoEncoder 对图像进行降维和特征提取，并在编码得到的 code 所在空间做检索。下图展示了 Encoder 的过程，并给出了原图与 Decoder 后的图像对比：
 
-<img src="无监督学习.assets/image-20210704170141399.png" alt="image-20210704170141399" style="zoom:50%;" />
+<img src="../assets/image-20210704170141399.png" alt="image-20210704170141399" style="zoom:50%;" />
 
 使用 AutoEncoder 对图像进行降维和特征提取的好处如下：
 
@@ -454,7 +454,7 @@ AutoEncoder 同样可以被用在图像检索上。以图找图最简单的做�
 
 下图给出了分别以原图的 pixel 计算相似度和以 AutoEncoder 后的 code 计算相似度的两种方法在图像检索上的结果。可以看到，通过 pixel 检索到的图像会出现很多奇怪的物品，而通过 code 检索到的图像则都是人脸（可能有些人脸在原图的 pixel 上看起来并不像，但把它们投影到 256 维的空间中却是相像的，因此能够被检索出来）。
 
-<img src="无监督学习.assets/image-20210704170426540.png" alt="image-20210704170426540" style="zoom:50%;" />
+<img src="../assets/image-20210704170426540.png" alt="image-20210704170426540" style="zoom:50%;" />
 
 ### Pre-training DNN
 
@@ -464,15 +464,15 @@ AutoEncoder 同样可以被用在图像检索上。以图找图最简单的做�
 
    > 这里做的不是降维而是升维，当编码后的维数比输入维数要高时，就可能会出现编码前后原封不动的情况，为此需要额外加一个正则项，比如L1 regularization，强迫使 code 的分布是分散的。
 
-   <img src="无监督学习.assets/image-20210704172350386.png" alt="image-20210704172350386" style="zoom:50%;" />
+   <img src="../assets/image-20210704172350386.png" alt="image-20210704172350386" style="zoom:50%;" />
 
 2. 接下来再让这些 1000 维的 vector 通过一个 1000-1000-1000 的自编码器，当其训练稳定后，再把参数 $W^2$ 固定住。此时，数据集中的图像都转化为了另一种形式的 1000 维的 vector。
 
-   <img src="无监督学习.assets/image-20210704172400980.png" alt="image-20210704172400980" style="zoom:50%;" />
+   <img src="../assets/image-20210704172400980.png" alt="image-20210704172400980" style="zoom:50%;" />
 
 3. 接下来再用转换后的数据集去训练第三个 10000-500-1000 的自编码器，训练稳定后固定参数 $W^3$。此时，数据集再次更新转化为 500 维的 vector；
 
-   <img src="无监督学习.assets/image-20210704172413579.png" alt="image-20210704172413579" style="zoom:50%;" />
+   <img src="../assets/image-20210704172413579.png" alt="image-20210704172413579" style="zoom:50%;" />
 
 4. 此时三个隐藏层通过预训练固定下来的参数 $W^1$、$W^2$、$W^3$ 就是训练整个 DNN 神经网络时的参数初始值；
 
@@ -480,7 +480,7 @@ AutoEncoder 同样可以被用在图像检索上。以图找图最简单的做�
 
 6. 最后再用反向传播去调整一遍参数。因为 $W^1$、$W^2$、$W^3$ 都已经是很好的参数值了，因此这里只需要做一些微调，这个步骤也因此得名为 Find-tune。而对于最后一层的参数 $W^4$ 就需要从头开始进行训练。
 
-   <img src="无监督学习.assets/image-20210704172503667.png" alt="image-20210704172503667" style="zoom:50%;" />
+   <img src="../assets/image-20210704172503667.png" alt="image-20210704172503667" style="zoom:50%;" />
 
 由于现在训练机器的条件比以往更好，因此 Pre-training 并不是必要的，但它也有自己的优势。如果你只有大量的 unlabeled data 和少量的 labeled data，那你可以先用这些 unlabeled data 把参数 $W^1$、$W^2$、$W^3$ 先初始化好，最后再用 labeled data 去做微调即可。因此 Pre-training 在有大量 unlabeled data 的场景下（如半监督学习）是比较有用的。
 
@@ -492,7 +492,7 @@ De-noising Auto-encoder 的基本思想是，把输入的 x 加上一些噪声 (
 
 这种方法可以增加系统的鲁棒性，因为此时的编码器 Encoder 不仅仅是在学习如何做编码，它还学习到了如何过滤掉噪声这件事情。
 
-<img src="无监督学习.assets/image-20210704173211145.png" alt="image-20210704173211145" style="zoom: 67%;" />
+<img src="../assets/image-20210704173211145.png" alt="image-20210704173211145" style="zoom: 67%;" />
 
 ### 收缩自动编码器
 
@@ -504,7 +504,7 @@ Contractive Auto-encoder 的基本思想是，在做 Encode 编码的时候，�
 
 处理图像通常都会用卷积神经网络 CNN，它的基本思想是交替使用卷积层和池化层，让图像越来越小，最终展平，这个过程跟 Encoder 编码的过程其实是类似的。理论上要实现自编码器，Decoder 只需要做跟 Encoder 相反的事即可，那对 CNN 来说，解码的过程也就变成了交替使用去卷积层和去池化层即可。
 
-<img src="无监督学习.assets/image-20210704181739874.png" alt="image-20210704181739874" style="zoom:67%;" />
+<img src="../assets/image-20210704181739874.png" alt="image-20210704181739874" style="zoom:67%;" />
 
 那什么是去卷积层 (Deconvolution) 和去池化层 (Unpooling) 呢？
 
@@ -516,7 +516,7 @@ Contractive Auto-encoder 的基本思想是，在做 Encode 编码的时候，�
 
 当然这不是唯一的做法，在 Keras 中，pooling 并没有记录原先的位置，做 Unpooling 的时候就是直接把 pixel 的值复制四份填充到扩大后的 matrix 里即可。
 
-<img src="无监督学习.assets/auto-unpooling.png" alt="img" style="zoom: 40%;" />
+<img src="../assets/auto-unpooling.png" alt="img" style="zoom: 40%;" />
 
 #### Deconvolution
 
@@ -531,7 +531,7 @@ Contractive Auto-encoder 的基本思想是，在做 Encode 编码的时候，�
 
 因此在实践中，做去卷积的时候直接对模型加卷积层即可。
 
-<img src="无监督学习.assets/auto-deconvolution.png" alt="img" style="zoom:40%;" />
+<img src="../assets/auto-deconvolution.png" alt="img" style="zoom:40%;" />
 
 ### Generate Image
 
@@ -539,37 +539,37 @@ Contractive Auto-encoder 的基本思想是，在做 Encode 编码的时候，�
 
 假设将 28×28 维的图像通过一层 2 维的 hidden layer 投影到二维平面上，得到的结果如下所示，不同颜色的点代表不同的数字。然后在红色方框中，等间隔的挑选二维向量丢进 Decoder 中，就会生成许多数字的图像。
 
-<img src="无监督学习.assets/auto-gene.png" alt="img" style="zoom:35%;" />
+<img src="../assets/auto-gene.png" alt="img" style="zoom:35%;" />
 
 此外，我们还可以对 Encoder 得到的 code 加上 L2 regularization，以限制 code 的分布范围集中在 0 附近，此时我们要用  Decoder 生成图像时，就可以直接以 0 为中心去随机采取样本点。观察生成的数字图像，可以发现横轴的维度表示是否含有圆圈，纵轴的维度表示是否倾斜。
 
 > 加上 L2 regularization 的好处：可以省略分析哪些 code 生成的图像是正常的，因为某些位置采样的点可能并不会产生有用的数字图像，可能产生的结果是不三不四的，因此我们就需要观察 Encoder 生成的 code 的分布，然后尽量在 code 分布的地方进行采样，这样采样得到的点所生成的图像才会像是一个数字。如果我们对 code 加上 L2 regularization，则 code 的分布就会集中在 0 附近，那么此时我们就不需要再观察 code 的分布，直接在 0 附近采样就行了，这样采样的结果必定可以产生有用的图像。
 
-<img src="无监督学习.assets/auto-gene2.png" alt="img" style="zoom:40%;" />
+<img src="../assets/auto-gene2.png" alt="img" style="zoom:40%;" />
 
 ### More About AutoEncoder
 
 #### What is good Embedding？
 
-<img src="无监督学习.assets/image-20210704205337913.png" alt="image-20210704205337913" style="zoom:50%;" />
+<img src="../assets/image-20210704205337913.png" alt="image-20210704205337913" style="zoom:50%;" />
 
 如何判断由 AutoEncoder 训练出来的 Embedding 是一个好的 Embedding 呢？一个评判标准就是这个 Embedding 可以很好地代表对应的 Object。那么如何实施这个标准呢？一个方法是构建一个二元分类器，用这个二元分类器来判断由 AutoEncoder 训练出来的 Embedding 是否符合标准。
 
-<img src="无监督学习.assets/image-20210704221649111.png" alt="image-20210704221649111" style="zoom:67%;" />
+<img src="../assets/image-20210704221649111.png" alt="image-20210704221649111" style="zoom:67%;" />
 
 拿图像嵌入来说，这个二元分类器（如上图所示）的输入就是一个图像和一个 Embedding，输出就是这个图像和这个 Embedding 的匹配分数，标签就是图像和输入的 Embedding 是不是同一对。因此，这个二元分类器的任务就是判断输入的图像和 Embedding 是不是一对的（如下图所示）。
 
-<img src="无监督学习.assets/image-20210704221359826.png" alt="image-20210704221359826" style="zoom:50%;" />
+<img src="../assets/image-20210704221359826.png" alt="image-20210704221359826" style="zoom:50%;" />
 
 这个二元分类器的损失函数 $L_D$ 就可以定义为输出的匹配值和标签值的交叉熵，然后通过训练调整二元分类器的参数 Ф，使得这个二元分类器的损失值达到最小值，即 $L^*_D=min_Ф L_D$。如果这个训练出来的最小的损失值 $L^*_D$ 很小，则说明由 AutoEncoder 训练出来的 Embedding 可以很好地代表图像，即二元分类器可以很好地区分不同图像之间的 Embedding 并判断出 Embedding 对应的图像；如果 $L^*_D$ 很大，则说明由 AutoEncoder 训练出来的 Embedding 不能很好地代表图像，即二元分类器不能区分出不同图像之间的 Embedding ，它认为不同图像之间的 Embedding 都很相似（如下图所示，由 AutoEncoder 训练出来的 Embedding 都是颜色相近的 Embedding）。
 
-<img src="无监督学习.assets/image-20210704222840769.png" alt="image-20210704222840769" style="zoom:50%;" />
+<img src="../assets/image-20210704222840769.png" alt="image-20210704222840769" style="zoom:50%;" />
 
 如果 $L^*_D$ 很大，那么我们就应该调整 Encoder 的参数 θ，使得 $L^*_D$ 能够变得更小。所以现在，我们训练 Encoder 的目标就变成了最小化 $L^*_D$，即 $θ^*=arg\space min_θ L^*_D$。
 
 实际上，典型的 AutoEncoder 中的 Decoder 就对应这个二元分类器的功能，如下图所示。只不过这个 Decoder 是一个简化的二元分类器，因为这个 Decoder 的输入只有 positive sample，而没有 negative sample。
 
-<img src="无监督学习.assets/image-20210704223648476.png" alt="image-20210704223648476" style="zoom:50%;" />
+<img src="../assets/image-20210704223648476.png" alt="image-20210704223648476" style="zoom:50%;" />
 
 有了这个更好地判断 Embedding 好坏的方法，我们就可以设计出不同的二元分类器，不同的二元分类器所训练出来的 Encoder 所输出的 Embedding 就会有不同的效果。
 
@@ -579,7 +579,7 @@ Contractive Auto-encoder 的基本思想是，在做 Encode 编码的时候，�
 
 Skip thought：按序输入一个句子的各个词，Encoder 输出这个句子的 Embedding，Decoder 用这个 Embedding 去预测这个句子的上一句和下一句。
 
-<img src="无监督学习.assets/image-20210705230945124.png" alt="image-20210705230945124" style="zoom: 50%;" />
+<img src="../assets/image-20210705230945124.png" alt="image-20210705230945124" style="zoom: 50%;" />
 
 Quik thought：是 Skip thought 极速版。在这个版本中，模型没有 Decoder，取而代之的是一个 Classifier。这个模型的输入是一个 current 句子、一个 next 句子和多个 random 句子，Encoder 会为每个句子都输出一个 Embedding，然后将这些 Embedding 都输入到 Classifier 中，Classifier 要做的事情就是根据 current 句子从 next 句子和多个 random 句子中挑选出 next 句子，挑选的方法就是将 current 句子的 Embedding 和其他句子的 Embedding 做 inner product，然后选择结果最大的那个句子作为 next 句子。如果 Classifier 可以正确地选择出 next 句子，就说明 current 句子和 next 句子的 Embedding 是好的 Embedding。
 
@@ -587,7 +587,7 @@ Quik thought：是 Skip thought 极速版。在这个版本中，模型没有 De
 
 Contrastive Predictive Coding (CPC)：用于音频序列的 AutoEncoder。它的想法就是先用 Encoder 获得语音序列前面多个小段的 Embedding，然后用最后一个 Embedding 去预测同一个 Encoder 在输入语音序列后面多个小段时会输出的 Embedding。
 
-<img src="无监督学习.assets/image-20210705232935711.png" alt="image-20210705232935711" style="zoom:50%;" />
+<img src="../assets/image-20210705232935711.png" alt="image-20210705232935711" style="zoom:50%;" />
 
 #### Interpretable Embedding
 
@@ -597,35 +597,35 @@ Contrastive Predictive Coding (CPC)：用于音频序列的 AutoEncoder。它的
 
 AutoEncoder 编码的对象可能是影像、音频或文本，而这些对象中不仅仅包含了一种信息，比如一段语音中包含 speaker 的信息、content 的信息和 environment noise 的信息，一段文本中包含语义的信息和语法的信息等等。因此，由 AutoEncoder 编码出来的 Embedding 也会包含这些多种多样的信息，但我们不知道其中哪些维度是 speaker 的信息，哪些维度是 content 的信息，所以 Feature Disentangle 要做的事情就是使得 Encoder 可以自动告诉我们哪些维度包含了哪些信息。
 
-<img src="无监督学习.assets/image-20210705100329045.png" alt="image-20210705100329045" style="zoom:50%;" />
+<img src="../assets/image-20210705100329045.png" alt="image-20210705100329045" style="zoom:50%;" />
 
 Feature Disentangle 有两种实现方式，一个是指定让 Encoder 输出的 Embedding 的某些维度代表固定的信息；另一个是使用多个 Encoder，每个 Encoder 输出指定的信息。
 
-<img src="无监督学习.assets/image-20210705114357186.png" alt="image-20210705114357186" style="zoom:50%;" />
+<img src="../assets/image-20210705114357186.png" alt="image-20210705114357186" style="zoom:50%;" />
 
 第一种方式可以用 Adversarial Training 实现：利用 GAN 的方法。假设 Embedding 有 200 维，要求前 100 维是关于 content 的信息。我们可以训练一个 speaker 鉴别器，输入 Embedding 的前 100 维让这个鉴别器去判断语音的 speaker 来自于谁，而 Encoder 的任务就是欺骗鉴别器，让这个鉴别器判断的准确率越低越好。Encoder 为了欺骗鉴别器，就会学到说把关于 speaker 的信息不放到前 100 维，而是将其放到后 100 维，这样前 100 维的信息就会只剩下关于 content 的信息。如此一来，就成功做到了 Feature Disentangle。
 
-<img src="无监督学习.assets/image-20210705153241852.png" alt="image-20210705153241852" style="zoom:50%;" />
+<img src="../assets/image-20210705153241852.png" alt="image-20210705153241852" style="zoom:50%;" />
 
 第二种方式可以用 Designed Network Architecture 实现：这个方法的原理就是分别在 Encoder1 和 Encoder2 的处理过程中增加一些操作（比如 IN 和 AdaIN），使得 Encoder1 和 Encoder2 可以分别抹除掉其他信息，而只保留自身需要的信息。如此一来，就成功做到了 Feature Disentangle。
 
-<img src="无监督学习.assets/image-20210705154522320.png" alt="image-20210705154522320" style="zoom:50%;" />
+<img src="../assets/image-20210705154522320.png" alt="image-20210705154522320" style="zoom:50%;" />
 
 Feature Disentangle 的用途之一：变声器。
 
-<img src="无监督学习.assets/image-20210705120543403.png" alt="image-20210705120543403" style="zoom:50%;" />
+<img src="../assets/image-20210705120543403.png" alt="image-20210705120543403" style="zoom:50%;" />
 
-<img src="无监督学习.assets/image-20210705120555457.png" alt="image-20210705120555457" style="zoom:50%;" />
+<img src="../assets/image-20210705120555457.png" alt="image-20210705120555457" style="zoom:50%;" />
 
 ##### Discrete Representation
 
 另一个让 AutoEncoder 编码出来的 Embedding 中各个维度的含义更容易被解读的想法就是 Discrete Representation，即把 Embedding 原本的连续表示变成离散表示。比如我们可以将图片的 Embedding 变成 one-hot vector 的形式（将 Embedding 中值最高的维度变为1，其余变为0即可），这样我们光看哪个维度是 1，我们就可以知道这个图片代表的是什么。但 one-hot vector 有个缺点，那就是图片有多少类，它就需要有多少个维度，因此我们可以采用 Binary vector 的方法进行改进（将 Embedding 中值大于0.5的维度变为1，其余变为0即可），这样就能大大减少离散表示的维度。
 
-<img src="无监督学习.assets/image-20210705161800025.png" alt="image-20210705161800025" style="zoom:50%;" />
+<img src="../assets/image-20210705161800025.png" alt="image-20210705161800025" style="zoom:50%;" />
 
 除了上面两个方式，我们还可以用 VQ-VAE 来实现 Embedding 的离散化。VQ-VAE 除了 Encoder 和 Decoder 外，还有一个 Codebook，Codebook 存放了一系列的离散向量（也是学习得来的）。VQVAE 的训练流程就是：输入某个图片，经过 Encoder 得到相应的 Embedding，然后将 Embedding 与 Codebook 中的每一个离散向量计算相似度，取出 Codebook 中相似度最高的那个离散向量作为 Decoder 的输入，以此还原输入的图片，接着就是相同的流程，即计算损失并梯度下降。
 
-<img src="无监督学习.assets/image-20210705163742698.png" alt="image-20210705163742698" style="zoom:50%;" />
+<img src="../assets/image-20210705163742698.png" alt="image-20210705163742698" style="zoom:50%;" />
 
 将 Embedding 进行离散化的用途之一：过滤连续型信息。假如输入的是语音数据，那么通过将 Encoder 输出的 Embedding 离散化，就可以将 Embedding 中除了文本内容之外的信息给剔除掉。这是因为离散化的 Embedding 比较容易存储离散化的信息，而像文本这些信息就是离散化的，像环境噪音和说话者这类信息就是连续型的，因此文本内容会被保留，而其他信息会被过滤掉。所以，Embedding 离散化可以用于像语音识别这类应用的模型的预处理，先把其中关于文本的信息过滤出来，然后再进行下一步的处理。
 
@@ -637,13 +637,13 @@ Feature Disentangle 的用途之一：变声器。
 
    > Seq2seq2seq 模型是不能微分的，因此就不能进行梯度下降，但为了使其可以被训练，我们可以利用强化学习来训练这个模型。
 
-   <img src="无监督学习.assets/image-20210705215528606.png" alt="image-20210705215528606" style="zoom:50%;" />
+   <img src="../assets/image-20210705215528606.png" alt="image-20210705215528606" style="zoom:50%;" />
 
-   <img src="无监督学习.assets/image-20210705220241910.png" alt="image-20210705220241910" style="zoom:50%;" />
+   <img src="../assets/image-20210705220241910.png" alt="image-20210705220241910" style="zoom:50%;" />
 
 2. 将 Embedding 转化为 tree：
 
-   <img src="无监督学习.assets/image-20210705221016830.png" alt="image-20210705221016830" style="zoom:50%;" />
+   <img src="../assets/image-20210705221016830.png" alt="image-20210705221016830" style="zoom:50%;" />
 
 # Matrix Fatorization
 
@@ -653,29 +653,29 @@ Feature Disentangle 的用途之一：变声器。
 
 比如我们有如下图所示的数据（称为用户推荐值矩阵），图中每行表示一个用户，每列是对应用户对于某个动漫任务的喜爱程度（也称为推荐值，这个值越高说明越应该推荐对应的动漫人物给这个用户）：
 
-<img src="无监督学习.assets/image-20210701152431256.png" alt="image-20210701152431256" style="zoom:67%;" />
+<img src="../assets/image-20210701152431256.png" alt="image-20210701152431256" style="zoom:67%;" />
 
 对此，我们可以认为用户和这些动漫人物的背后存在 k 个属性（比如傲娇和呆萌，k 的大小是超参数），这 k 个属性导致了用户对于某个动漫人物的喜爱程度，比如某个用户在傲娇这个属性上数值比较高，而在呆萌这个属性上数值比较小，这时刚好有两个动漫人物，一个在傲娇这个属性上数值比较高，在呆萌这个属性上数值比较小，而另一个相反，则我们有理由相信这个用户对于较为傲娇的动漫人物的喜爱程度会高于较为呆萌的动漫人物。如下图所示，较为傲娇的用户肯定更倾向于较为傲娇的动漫人物，它们之间的匹配度会更高。
 
-<img src="无监督学习.assets/image-20210701154219985.png" alt="image-20210701154219985" style="zoom: 67%;" />
+<img src="../assets/image-20210701154219985.png" alt="image-20210701154219985" style="zoom: 67%;" />
 
 如果我们用这 k 个属性去描述每个用户和动漫人物，那么我们就可以得到每个用户和每个动漫人物的描述向量（向量中的每个元素对应一个属性，元素的值就表示了对应用户或动漫人物在这个属性上的程度）。将每个用户的描述向量和每个动漫人物的描述向量分别组合起来就可以得到两个矩阵，即用户特征矩阵和内容特征矩阵（内容指代动漫人物），而且这两个矩阵必定隐藏于用户推荐值矩阵中，也就是说，我们没办法直接得到这两个特征矩阵。
 
 现在我们假设用户对于某个动漫人物的喜爱程度（即推荐值）来自于用户的描述向量与该动漫人物的描述向量的 inner product，那么用户推荐值矩阵 X 就可以看成是用户特征矩阵 U 和内容特征矩阵 V 的 dot product，即 X=UV。这时候要注意，由 U 和 V 的 dot product 是无法得到完全和用户推荐值矩阵 X 一样的结果，因此我们的目标就是要使得 U 和 V 的 dot product 和用户推荐值矩阵 X 之间的误差尽量小。要得到 U 和 V，可以通过分解已知的用户推荐值矩阵 X 来得到，具体的分解方法可以采用 SVD 分解，可以得到三个分解矩阵，我们将中间那个矩阵 Σ 归并到左边或者右边（由你决定），那么就可以得到两个分解矩阵，这两个矩阵就分别对应了 U 和 V。
 
-<img src="无监督学习.assets/image-20210701163138327.png" alt="image-20210701163138327" style="zoom:67%;" />
+<img src="../assets/image-20210701163138327.png" alt="image-20210701163138327" style="zoom:67%;" />
 
 但通常的时候，我们是不知道用户推荐值矩阵 X 中的某些值的，而这些不知道的值恰恰是我们推荐系统最需要直到的一些东西，因为有了这些东西（即推荐值），我们才能知道这个动漫人物是不是用户喜欢的，应不应该推荐给他。此时就出现了两个问题：① 我们需要预测这些未知的推荐值，而这些未知的推荐值可以由对应用户的描述向量和对应动漫人物的描述向量的 inner product 得到；② 由于某些推荐值不知道，我们无法直接通过 SVD 分解的方法直接获得用户特征矩阵 U 和内容特征矩阵 V，也就是我们无法得到用户的描述向量和动漫人物的描述向量。这两个问题看起来就是矛盾的，如何解呢？
 
 解决方法：我们可以先随机初始化用户特征矩阵 U 和内容特征矩阵 V，然后用这两个矩阵相乘去拟合用户推荐值矩阵 X，而这个拟合的过程可以通过神经网络的方式进行，而其中的损失函数可以定义为已知推荐值对应的描述向量的 inner product 和该推荐值的均方误差，接着通过梯度下降的方法来更新 U 和 V。
 
-<img src="无监督学习.assets/image-20210701181457220.png" alt="image-20210701181457220" style="zoom:67%;" />
+<img src="../assets/image-20210701181457220.png" alt="image-20210701181457220" style="zoom:67%;" />
 
 当通过不断迭代计算到损失最小时，我们就可以得到用户特征矩阵 U 和内容特征矩阵 V。此时，将 U 和 V 相乘就可以得到拟合矩阵 $\hat X$，那么用户推荐值矩阵 X 中的未知推荐值就可以用拟合矩阵 $\hat X$ 中相同位置的值代替，有了这个推荐值，就可以进行推荐了。
 
-<img src="无监督学习.assets/image-20210701183535424.png" alt="image-20210701183535424" style="zoom:67%;" />
+<img src="../assets/image-20210701183535424.png" alt="image-20210701183535424" style="zoom:67%;" />
 
 在上面的推导过程中，我们只考虑了每个用户和动漫人物的描述向量，用它们的 inner product 表示推荐值。实际上，我们还可以考虑除了描述属性之外会影响用户推荐值的诱导因素 $b_A$ 和 $b_1$，其中 $b_A$ 表示用户本身对于动漫人物的倾向程度（有些人本身就喜欢动漫），$b_1$ 表示动漫人物本身对用户的吸引程度（有些动漫人物本身就很吸引人），加入了这两个因素，我们就可以把拟合表示式和损失函数改写成如下形式，其它计算过程不变。
 
-<img src="无监督学习.assets/image-20210701202716270.png" alt="image-20210701202716270" style="zoom: 50%;" />
+<img src="../assets/image-20210701202716270.png" alt="image-20210701202716270" style="zoom: 50%;" />
 
