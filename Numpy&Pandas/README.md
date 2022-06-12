@@ -497,7 +497,7 @@ df['E'] = pd.Series([1,2,3,4,5,6], index=pd.date_range('20130101',periods=6))
 
 ```python
 dates = pd.date_range('20130101', periods=6)
-df = pd.DataFrame(np.arange(24).reshape((6,4)),index=dates, columns=['A','B','C','D'])
+df = pd.DataFrame(np.arange(24).reshape((6,4)), index=dates, columns=['A','B','C','D'])
 df.iloc[0,1] = np.nan
 df.iloc[1,2] = np.nan
 """
