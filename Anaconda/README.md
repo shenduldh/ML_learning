@@ -81,7 +81,7 @@
 - 安装 jupyter notebook：pip install notebook
 - 安装 vscode 扩展：python、jupyter
 
-## 常V用命令
+## 常用命令
 
 2. 查看当前环境的包
 
