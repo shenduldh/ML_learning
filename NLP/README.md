@@ -315,7 +315,7 @@ Mask 的两种作用：
 
 1. 假设 $Q,K^T,QK^T$ 长下面的样子。其中，Q 的每一行（对应 $K^T$ 的每一列）表示一个词，第 3, 4 行（对应 $K^T$ 的第 3, 4 列）为填充的内容（这里用0填充，也可以用其他数值填充），也就是 padding mask 的目标。$QK^T$ 的每一行就对应一个词对于句子的关注分值向量。
 
-   $Q=\begin{bmatrix}
+   $$Q=\begin{bmatrix}
    1&1&1&1\\
    2&2&2&2\\
    0&0&0&0\\
@@ -332,7 +332,7 @@ Mask 的两种作用：
    24&32&0&0\\
    0&0&0&0\\
    0&0&0&0
-   \end{bmatrix}$
+   \end{bmatrix}$$
 
 2. 由上可以知道，Q 的第 3, 4 行和 K 的第 3, 4 列都是需要进行 padding mask 的地方。对 K 的 padding mask 是在 $QK^T$ 计算之后 softmax 之前进行的（用于消除 K 中 padding 部分对于 softmax 的影响），而对 Q 的 padding mask 是在整个 attention 计算完后进行的（用于消除 Q 中 padding 部分经过 attention 计算后产生的无效数据）。但实际上，只需要进行对 K 的 padding mask，而不需要进行对 Q 的 padding mask，因为 Q 的 padding 部分采用 0 来填充，而且在参与后续计算时都是用一整行 0 来进行计算的，因此无论如何计算，它永远都只是一行 0 而已。综上可知，padding mask 只需要在 $QK^T$ 计算之后 softmax 之前进行，且只需要对 K 进行 padding mask。
 
@@ -354,7 +354,7 @@ Mask 的两种作用：
 
 2. sequence mask 和 padding mask 都是在 $QK^T$ 计算之后 softmax 之前进行的，但它们俩之间没有计算的先后顺序，谁先进行都可以，而且也可以将它们的 mask 矩阵按元素相乘后同时进行 mask 的计算（如下图所示）。
 
-   <img src="https://static.mofanpy.com/results-small/nlp/transformer_look_ahead_mask.png" alt="look ahead mask" style="zoom:67%;" />
+   <img src="https://static.mofanpy.com/static/results-small/nlp/transformer_look_ahead_mask.png" alt="look ahead mask" style="zoom:67%;" />
 
 >关于 mask 机制的参考文章：
 >
