@@ -336,21 +336,21 @@ Mask 的两种作用：
 
 2. 由上可以知道，Q 的第 3, 4 行和 K 的第 3, 4 列都是需要进行 padding mask 的地方。对 K 的 padding mask 是在 $QK^T$ 计算之后 softmax 之前进行的（用于消除 K 中 padding 部分对于 softmax 的影响），而对 Q 的 padding mask 是在整个 attention 计算完后进行的（用于消除 Q 中 padding 部分经过 attention 计算后产生的无效数据）。但实际上，只需要进行对 K 的 padding mask，而不需要进行对 Q 的 padding mask，因为 Q 的 padding 部分采用 0 来填充，而且在参与后续计算时都是用一整行 0 来进行计算的，因此无论如何计算，它永远都只是一行 0 而已。综上可知，padding mask 只需要在 $QK^T$ 计算之后 softmax 之前进行，且只需要对 K 进行 padding mask。
 
-3. 对于 $K^T$，它的 mask 矩阵为$mask=\begin{bmatrix}
+3. 对于 $K^T$，它的 mask 矩阵为$$mask=\begin{bmatrix}
    1 &1 &0 &0 \\
    1 &1 &0 &0 \\
    1 &1 &0 &0 \\
    1 &1 &0 &0
-   \end{bmatrix}$（元素为0的部分就是 K 的 padding 部分），然后我们用这个 mask 矩阵去和 $QK^T$ 做运算：$QK^T=QK^T−(1−mask)×10^{10}$。这样，在 $QK^T$ 中属于 K 的 padding 部分的元素都会变成一个极其小的数（即$－10^{10}$），现在再将 $QK^T$ 去做 softmax 运算时，K 的 padding 部分就会被归一化为0，从而不会对非 padding 部分的概率分布产生影响（如果 padding 部分的值较大，则会平摊一部分的概率）。
+   \end{bmatrix}$$（元素为0的部分就是 K 的 padding 部分），然后我们用这个 mask 矩阵去和 $QK^T$ 做运算：$QK^T=QK^T−(1−mask)×10^{10}$。这样，在 $QK^T$ 中属于 K 的 padding 部分的元素都会变成一个极其小的数（即$－10^{10}$），现在再将 $QK^T$ 去做 softmax 运算时，K 的 padding 部分就会被归一化为0，从而不会对非 padding 部分的概率分布产生影响（如果 padding 部分的值较大，则会平摊一部分的概率）。
 
 ==如何进行 sequence mask？==
 
-1. sequence mask 的过程和 padding mask 差不多，只不过是把 mask 矩阵换成了下三角全为1的矩阵 $mask=\begin{bmatrix}
+1. sequence mask 的过程和 padding mask 差不多，只不过是把 mask 矩阵换成了下三角全为1的矩阵 $$mask=\begin{bmatrix}
    1 &0 &0 &0 \\
    1 &1 &0 &0 \\
    1 &1 &1 &0 \\
    1 &1 &1 &1
-   \end{bmatrix}$，然后进行运算 $QK^T=QK^T−(1−mask)×10^{10}$ 即可。这样，在 $QK^T$ 中全为 0 的上三角部分的元素都会变成一个极其小的数（即$－10^{10}$），现在再将 $QK^T$ 去做 softmax 运算时，这些部分就会被归一化为0，从而不会对其他部分的概率分布产生影响。那么当我们将结果中的第一行作为输入去预测生成下一个词时，就没有了第 2, 3, 4 个词的信息，decoder 就只能用第一个词的信息来产生预测。对于其他行作为输入时的情况，都是如此。 
+   \end{bmatrix}$$，然后进行运算 $QK^T=QK^T−(1−mask)×10^{10}$ 即可。这样，在 $QK^T$ 中全为 0 的上三角部分的元素都会变成一个极其小的数（即$－10^{10}$），现在再将 $QK^T$ 去做 softmax 运算时，这些部分就会被归一化为0，从而不会对其他部分的概率分布产生影响。那么当我们将结果中的第一行作为输入去预测生成下一个词时，就没有了第 2, 3, 4 个词的信息，decoder 就只能用第一个词的信息来产生预测。对于其他行作为输入时的情况，都是如此。 
 
 2. sequence mask 和 padding mask 都是在 $QK^T$ 计算之后 softmax 之前进行的，但它们俩之间没有计算的先后顺序，谁先进行都可以，而且也可以将它们的 mask 矩阵按元素相乘后同时进行 mask 的计算（如下图所示）。
 
