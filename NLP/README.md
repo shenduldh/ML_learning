@@ -83,7 +83,7 @@
 
 上述过程总结起来就是：通过循环神经网络 encoding 的过程，拿到对句子的理解（即句向量），然后用另一个循环神经网络作为 Decoder 解码器，基于句向量生成下文。简而言之，Encoder 负责理解上文，Decoder 负责思考怎么样在理解的句子的基础上做任务。这一套方法就是在自然语言处理中风靡一时的Seq2Seq框架。
 
-<img src="https://pic2.zhimg.com/v2-baec0a2cb4583d2d42839bbb5b2727b5_r.jpg" alt="preview" style="zoom: 15%;" />
+<img src="./../assets/v2-baec0a2cb4583d2d42839bbb5b2727b5_r.jpg" alt="preview" style="zoom: 15%;" />
 
 > 思想：在研究 RNN 模型时，最重要的就是搞清楚每一时间步的输出由哪些变量决定，以及这些变量之间的计算过程。
 >
@@ -100,17 +100,17 @@ Seq2seq 在训练时和预测时的 decoder 有所不同：
 
 1. 训练时 decoder 的过程：每一时间步的输入都是 true label，使得不管在训练时有没有预测错，下一步 decoding 的输入都是正确的（就像小孩学走路，当他摔倒了，父母帮他扶起来。这样可以让小孩学得更快，但缺乏自我纠正错误的能力）。
 
-   ![training](https://static.mofanpy.com/results-small/nlp/seq2seq_training.png)
+   <img src="../assets/seq2seq_training.png" alt="training" style="zoom:67%;" />
 
 2. 预测时 decoder 的过程：下一步的预测均基于 decoder 上一步的预测，而不是 true label（就像小孩学走路，当他摔倒了，让他自己重新站起来。这种方法可以让小孩具有自我纠正错误的能力，但需要消耗较大的计算资源，而且学得也比较慢）。
 
-   ![inference](https://static.mofanpy.com/results-small/nlp/seq2seq_inference.png)
+   <img src="./../assets/seq2seq_inference.png" alt="inference" style="zoom:67%;" />
 
 Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddingSampler 的预测方式。
 
 > Beam search算法的理解：[Seq2Seq中的beam search算法 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/36029811?group_id=972420376412762112)
 
-![beam search](https://static.mofanpy.com/results-small/nlp/seq2seq_beam_search.png)
+<img src="../assets/seq2seq_beam_search.png" alt="beam search" style="zoom: 67%;" />
 
 ## 用cnn实现Seq2seq
 
@@ -118,7 +118,7 @@ Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddi
 
 用 cnn 实现 Seq2seq 实际上仅仅是在 encoder 方面做出了改变，decoder 部分还是和原来的一样。也就是说，使用 cnn 模型仅仅是为了用 cnn 的角度去获取对句子的理解（即句向量），看看它的这个角度和原始采用 rnn 去理解的角度有什么不一样。
 
-![cnn 句向量](https://static.mofanpy.com/results-small/nlp/cnn-ml_sentence_embedding.png)
+<img src="../assets/cnn-ml_sentence_embedding.png" alt="cnn 句向量" style="zoom:67%;" />
 
 能够用 cnn 模型处理 Seq2seq 的原因在于：将句子中各个词的词向量合并起来后所形成的数据其实和只有一个 chanel 的图像数据完全一致，因此完全可以用卷积核去扫描文本数据，从而获取对句子的理解。
 
@@ -171,7 +171,7 @@ Seq2seq 可以用下图所示的 Beam search 的预测方式代替 GreedyEmbeddi
 >
 >    ① 得到此刻的匹配分数（权值）：将$s_{t-1}$（称为Query）与 encoder 每一时刻的状态$h_i$（称为Key）进行 match 操作，得到 decoder 此刻对于 encoder 每一时刻的匹配度，对这些匹配度用 softmax 进行归一化处理，得到 decoder 此刻对于 encoder 每一时刻的匹配分数（encoder 的每一时刻等同于被翻译序列中的每一个词，这里的匹配分数就相当于 decoder 此刻所要输出的词对于被翻译序列中的每一个词的重视程度，即注意力度）。计算匹配度的公式有三个（作者提出），如下所示：
 >
->    <img src="https://static.mofanpy.com/results/nlp/luong_attention_score_func.png" alt="luong_score_func" style="zoom:50%;" /> 
+>    <img src="./../assets/image-20230310174916291.png" alt="image-20230310174916291" style="zoom:60%;" /> 
 >
 >    ② 得到此刻的语义向量$c_{t}$：将上面得到的匹配分数与 encoder 每一时刻的状态$h_i$（称为Value）进行加权求和，其结果就是 decoder 此刻的语义向量（也可以看成是是上下文向量，该向量用于指导 decoder 此刻如何进行翻译）；
 >
@@ -293,7 +293,7 @@ Transformer 本身没有采用 rnn 作为内部结构，那么它是如何理解
 
 某层输出的残差和规范化的计算过程：将该层输出与输入相加的结果进行规范化即可。
 
-<img src="https://jalammar.github.io/images/t/transformer_resideual_layer_norm_2.png" alt="img" style="zoom:50%;" />
+<img src="./../assets/transformer_resideual_layer_norm_2.png" alt="img" style="zoom:50%;" />
 
 ### Mask 机制
 
@@ -354,7 +354,7 @@ Mask 的两种作用：
 
 2. sequence mask 和 padding mask 都是在 $QK^T$ 计算之后 softmax 之前进行的，但它们俩之间没有计算的先后顺序，谁先进行都可以，而且也可以将它们的 mask 矩阵按元素相乘后同时进行 mask 的计算（如下图所示）。
 
-   <img src="https://static.mofanpy.com/static/results-small/nlp/transformer_look_ahead_mask.png" alt="look ahead mask" style="zoom:67%;" />
+   <img src="../assets/transformer_look_ahead_mask.png" alt="look ahead mask" style="zoom:67%;" />
 
 >关于 mask 机制的参考文章：
 >
