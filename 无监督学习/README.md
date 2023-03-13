@@ -250,7 +250,7 @@ PCA 的目的是找到一个投影矩阵 W，它可以使得 z=Wx 的每一个�
 
 Manifold Learning 要做的事情就是把 S 型的这块东西展开，把塞到高维空间的低维空间摊平（即降维）。摊平的好处就是：把这个塞到高维空间里的 manifold 摊平以后，那我们就可以在这个 manifold 上面用直接用欧式距离来算点和点之间的距离，这会对接下来你要做的 supervised learning 有帮助。
 
-<img src="https://datawhalechina.github.io/leeml-notes/chapter26/res/chapter26-1.png" alt="image" style="zoom:67%;" />
+<img src="../assets/chapter26-1.png" alt="image" style="zoom:67%;" />
 
 一个形象的流形降维（摊平）过程如下图。我们有一块卷起来的布，我们希望将其展开到一个二维平面，并且在展开后的布能够在局部保持布结构的特征，这个展开的过程就像两个人将其拉开一样。
 
