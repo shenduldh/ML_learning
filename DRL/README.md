@@ -393,9 +393,9 @@ def learn(self):
 
 强化学习有两种方法：一类是value-based方法，需要计算价值函数（value function），然后根据自己所认为的高价值来选择行为（action），比如Q Learning、Sarsa、DQN；另一类是policy-based方法，不需要计算value function，直接按照概率分布随机输出行为，比如PG。对比起以值为基础的方法，Policy Gradients直接输出行为的最大好处就是, 它能在一个连续区间内挑选动作，而基于值的方法一般都是只处理离散动作，无法处理连续动作。
 
-这里讲PG的其中一个实现方法Monte-Carlo PG。该方法构造了一个策略神经网络（Policy Network），输入为observation，输出为该observation中所有行为的概率分布，然后就可以按照这个概率分布随机输出一个action（PG的策略就是概率大(帮助大或贡献多)的行为要多做）。该方法采用回合更新（也叫REINFORCE），即先存储一回合的记忆，然后根据这一回合的记忆去更新神经网络的参数。最后，通过更新神经网络参数，增加表现好的action出现的可能性，减小表现差的action出现的可能性。下面是PG的一个神经网络的示例：
+这里讲PG的其中一个实现方法Monte-Carlo PG。该方法构造了一个策略神经网络（Policy Network），输入为observation，输出为该observation中所有行为的概率分布，然后就可以按照这个概率分布随机输出一个action（PG的策略就是概率大（即帮助大或贡献多）的行为要多做）。该方法采用回合更新（也叫REINFORCE），即先存储一回合的记忆，然后根据这一回合的记忆去更新神经网络的参数。最后，通过更新神经网络参数，增加表现好的action出现的可能性，减小表现差的action出现的可能性。下面是PG的一个神经网络的示例：
 
-![5-2-1.png](https://static.mofanpy.com/results/reinforcement-learning/5-2-1.png)
+![5-2-1.png](./../assets/5-2-1.png)
 
 > PG基于以下假定：
 >
@@ -409,7 +409,7 @@ PG如何进行反向传递？
 
 1. PG是没有误差的，即PG不是采用loss函数来进行反向传递。实际上，PG用reward函数来代替loss函数，即PG追求的目标不是loss最小，而是reward最大，它通过reward函数来进行梯度下降，最终的目的就是让这次被选中的行为更有可能或更不可能在下次发生，也就是使用reward奖惩的方法来确定这个行为是不是应当增加被选的概率。
 
-   ![PG03.png](https://static.mofanpy.com/results/ML-intro/PG03.png)
+   ![PG03.png](./../assets/PG03.png)
 
 2. 举个例子。在上图中，我们通过神经网络分析，选出了左边的行为，我们直接进行反向传递，使之下次被选的可能性增加，但是奖惩信息却告诉我们，这次的行为是不好的，那这个动作可能性增加的幅度随之被减低。再比如这次的观测信息让神经网络选择了右边的行为，右边的行为随之想要进行反向传递，使右边的行为下次被多选一点，这时奖惩信息也来了，告诉我们这是好行为，那我们就在这次反向传递的时候加大力度，让它下次被多选的幅度更猛烈。
 
@@ -419,10 +419,9 @@ PG如何进行反向传递？
 
 5. 如果将参数$v_{t}$的值在CartPole环境中一回合中每一步计算的值展现出来，则是下面这样的：
 
-   <img src="https://static.mofanpy.com/results/reinforcement-learning/5-2-2.png" alt="5-2-2.png" style="zoom:50%;" />
+   <img src="./../assets/5-2-2.png" alt="5-2-2.png" style="zoom:50%;" />
 
    可以看出，左边一段的$v_{t}$有较高的值，右边的较低，这就是在说：请重视我这回合开始时的一系列动作，因为前面一段时间杆子还没有掉下来，而且请惩罚我之后的一系列动作，因为后面的动作让杆子掉下来了。这样$v_{t}$就能在每回合的学习中诱导gradient descent朝着正确的方向发展了。
-
 
 ### 算法流程
 
@@ -436,20 +435,19 @@ Policy Gradients算法的重点就是每一episode对神经网络参数θ进行�
 >
 > $∇_{θ}logπ_{θ}(s_{t},a_{t})v_{t}$为更新参数θ的梯度。
 
-![5-1-1.png](https://static.mofanpy.com/results-small/reinforcement-learning/5-1-1.png)
+![5-1-1.png](./../assets/5-1-1.png)
 
 ### 代码实现
 
 ```python
 for i_episode in range(3000):
-
     observation = env.reset()
 
     while True:
-        if RENDER: env.render()
+        if RENDER:
+            env.render()
 
         action = RL.choose_action(observation)
-
         observation_, reward, done, info = env.step(action)
 
         RL.store_transition(observation, action, reward) # 存储这一回合的 transition
@@ -461,7 +459,10 @@ for i_episode in range(3000):
                 running_reward = ep_rs_sum
             else:
                 running_reward = running_reward * 0.99 + ep_rs_sum * 0.01
-            if running_reward > DISPLAY_REWARD_THRESHOLD: RENDER = True # 判断是否显示模拟
+
+            if running_reward > DISPLAY_REWARD_THRESHOLD:
+                RENDER = True # 判断是否显示模拟
+
             print("episode:", i_episode, "  reward:", int(running_reward))
 
             vt = RL.learn() # 学习，输出 vt
@@ -500,10 +501,12 @@ def learn(self):
 def choose_action(self, observation):
     # 所有 action 的概率
     prob_weights = self.sess.run(self.all_act_prob, feed_dict={
-        self.tf_obs: observation[np.newaxis, :]})    
+        self.tf_obs: observation[np.newaxis, :]
+    })    
     # 根据概率来选 action
     action = np.random.choice(
-        range(prob_weights.shape[1]), p=prob_weights.ravel())
+        range(prob_weights.shape[1]), p=prob_weights.ravel()
+    )
     return action
 ```
 
@@ -535,7 +538,7 @@ Actor Critic是在Policy Gradients算法的基础上改进的RL算法，由Actor
 
 因此，Actor Critic对于PG的最大改进就是引入了Critic来学习环境和奖励之间的关系，使其能看到现在所处状态的潜在奖励，然后用它来指点Actor。此外，用Critic来指点Actor便能使Actor每一步都能进行更新，如果使用单纯的Policy Gradients，Actor就只能等到回合结束才能开始更新。
 
-<img src="https://static.mofanpy.com/results/ML-intro/AC1.png" alt="AC1.png" style="zoom:67%;" /><img src="https://static.mofanpy.com/results/ML-intro/AC3.png" alt="AC3.png" style="zoom:67%;" />
+<img src="./../assets/AC1.png" alt="AC1.png" style="zoom:67%;" /> <img src="./../assets/AC3.png" alt="AC3.png" style="zoom:70%;" />  
 
 可以看出，Actor的前身就是Policy Gradients，而Critic的前身就是Q Learning（或是其他Value-Based算法）。Actor可以毫不费力地在连续动作中选取合适的动作（Q Learning不行），Critic可以进行单步更新，从而使得Actor也能进行单步更新（单纯的Actor无法进行单步更新）。因此，两者的结合互相弥补了对方的缺陷。
 
@@ -547,11 +550,11 @@ Actor Critic是在Policy Gradients算法的基础上改进的RL算法，由Actor
 
 总流程如下图所示：
 
-<img src="https://static.mofanpy.com/results/reinforcement-learning/6-1-1.png" alt="6-1-1.png" style="zoom:80%;" />
+<img src="./../assets/6-1-1.png" alt="6-1-1.png" style="zoom:80%;" />
 
 Actor和Critic的神经网络如下所示：
 
-<img src="https://static.mofanpy.com/results/reinforcement-learning/6-1-2.png" alt="6-1-2.png" style="zoom: 50%;" /><img src="https://static.mofanpy.com/results/reinforcement-learning/6-1-3.png" alt="6-1-3.png" style="zoom: 52%;" />
+<img src="./../assets/6-1-2.png" alt="6-1-2.png" style="zoom: 50%;" />  <img src="./../assets/6-1-3.png" alt="6-1-3.png" style="zoom: 52%;" />
 
 ### 代码实现
 
@@ -622,7 +625,7 @@ Deep Deterministic Policy Gradient (DDPG)吸收了Actor Critic让Policy gradient
 
    在神经网络的结构上和DQN一样，即Actor和Critic分别采用两套结构相同但参数更新频率不同的神经网络。对于Actor来说，就是actor_target_net和actor_eval_net；对于Critic，就是critic_target_net和critic_eval_net。此外，也采用和DQN一样的记忆库，用于存储足够多的记忆，然后在进行网络参数的更新时随机选取一部分进行学习。
 
-   <img src="https://static.mofanpy.com/results-small/ML-intro/ddpg4.png" alt="ddpg4.png" style="zoom:67%;" />
+   <img src="./../assets/ddpg4.png" alt="ddpg4.png" style="zoom:67%;" />
 
    ① actor_eval_net：负责策略网络参数θ的迭代更新，并根据当前状态s选择当前动作a，用于和环境交互生成下一状态s_和奖励r。
 
@@ -642,7 +645,7 @@ Deep Deterministic Policy Gradient (DDPG)吸收了Actor Critic让Policy gradient
 
 ### 算法流程
 
-<img src="https://static.mofanpy.com/results/reinforcement-learning/6-2-2.png" alt="6-2-2.png" style="zoom:67%;" /><img src="https://static.mofanpy.com/results/reinforcement-learning/6-2-3.png" alt="6-2-3.png" style="zoom:67%;" />
+<img src="./../assets/6-2-2-1734685335302-27.png" alt="6-2-2" style="zoom:67%;" />  <img src="./../assets/6-2-3.png" alt="6-2-3" style="zoom:67%;" />
 
 1. 每一回合将当前状态s输入actor_eval_net，得到行为a。执行行为a，得到新状态s\_和奖励r，将s、a、s\_和r保存到记忆库。令s=s\_，重复进行上述步骤，直到记忆库有足够多的样本；
 
