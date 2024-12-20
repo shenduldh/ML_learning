@@ -240,7 +240,7 @@ DQN是一种融合了神经网络和Q Learning的强化学习方法，完整名�
 
 在Q Learning中，我们使用表格来存储每一个状态state以及该状态的每个行为action所拥有的Q值，但当今问题太复杂，状态可以多到比天上的星星还多（比如下围棋）。如果全用表格来存储它们，恐怕我们的计算机有再大的内存都不够，而且每次在这么大的表格中搜索对应的状态也是一件很耗时的事。
 
-一个有效的解决方法就是使用神经网络来代替表格，神经网络可以作为一种映射，即输入状态+行为（或仅有状态）输出对应的Q值，主要有两种方式：①  输入状态s+行为a，输出行为a的Q值Q(s,a)；② 仅输入状态s，输出该状态下所有行为的Q值Q(s,)。
+一个有效的解决方法就是使用神经网络来代替表格，神经网络可以作为一种映射，即输入状态+行为（或仅有状态）输出对应的Q值，主要有两种方式：① 输入状态s + 行为a，输出行为a的Q值Q(s,a)；② 仅输入状态s，输出该状态下所有行为的Q值Q(s,)。
 
 ![DQN2.png](./../assets/DQN2.png)
 
@@ -336,7 +336,8 @@ def learn(self):
     	feed_dict={
         	self.s_: batch_memory[:, -self.n_features:],
         	self.s: batch_memory[:, :self.n_features]
-    	})
+    	},
+    )
 
 	# q_next, q_eval 包含了 s_ 和 s 中所有 action 的值，
 	# 但我们只需要 s 中选中的 action 的值进行反向传递，
@@ -380,8 +381,10 @@ def learn(self):
 	"""
 
 	# 训练 eval_net
-	_, self.cost = self.sess.run([self._train_op, self.loss],
-           feed_dict={self.s: batch_memory[:, :self.n_features],self.q_target: q_target})
+	_, self.cost = self.sess.run([self._train_op, self.loss], feed_dict={
+        self.s: batch_memory[:, :self.n_features],
+        self.q_target: q_target,
+    })
 	self.cost_his.append(self.cost) # 记录 cost 误差
 
 	# 逐渐增加 epsilon，降低行为的随机性
